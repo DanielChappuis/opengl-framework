@@ -31,14 +31,14 @@ using namespace openglframework;
 
 // Constructor
 Scene::Scene(Viewer* viewer) : mViewer(viewer), mLight0(0),
-                               mPhongShader("../../opengl-framework/src/shaders/phong.vert",
-                                            "../../opengl-framework/src/shaders/phong.frag"){
+                               mPhongShader("shaders/phong.vert",
+                                            "shaders/phong.frag"){
 
     // Move the light 0
     mLight0.translateWorld(Vector3(15, 15, 15));
 
     // Load the mesh
-    bool isMeshLoaded = mMesh.loadFromFile("../../opengl-framework/demo/torus.obj");
+    bool isMeshLoaded = mMesh.loadFromFile("torus.obj");
     assert(isMeshLoaded);
 
     // Calculate the normals of the mesh

@@ -27,7 +27,7 @@
 #define SCENE_H
 
 // Libraries
-#include "../src/openglframework.h"
+#include <openglframework.h>
 
 // Class Scene
 class Scene {
