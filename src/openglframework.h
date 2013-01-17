@@ -27,6 +27,7 @@
 #define OPENGL_FRAMEWORK_H
 
 // Libraries
+#include "MeshLoader.h"
 #include "Viewer.h"
 #include "Camera.h"
 #include "Light.h"

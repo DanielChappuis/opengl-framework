@@ -27,6 +27,7 @@
 #define MESH_H
 
 // Libraries
+// TODO : Remove some includes here (not needed)
 #include <string>
 #include <vector>
 #include "definitions.h"
@@ -36,34 +37,6 @@
 #include "Object3D.h"
 
 namespace openglframework {
-
-// Class VertexMergingData
-// This class is used in the method to read a mesh
-class VertexMergingData {
-
-    public:
-        VertexMergingData() : indexPosition(0), indexNormal(0), indexUV(0) {}
-        unsigned int indexPosition;
-        unsigned int indexNormal;
-        unsigned int indexUV;
-};
-
-// Class VertexMergingDataComparison
-// This class is used in the method to read a mesh
-class VertexMergingDataComparison {
-
-    public:
-        bool operator()(const VertexMergingData& x, const VertexMergingData& y) const {
-            if(x.indexPosition < y.indexPosition)
-                return true;
-            if(x.indexPosition == y.indexPosition && x.indexNormal < y.indexNormal)
-                return true;
-            if(x.indexPosition == y.indexPosition && x.indexNormal ==
-                                  y.indexNormal && x.indexUV < y.indexUV)
-                return true;
-            return false;
-    }
-};
 
 // Class Mesh
 // This class represents a 3D triangular mesh
@@ -92,11 +65,6 @@ class Mesh : public Object3D {
         // UV texture coordinates
         std::vector<Vector2> mUVs;
 
-        // -------------------- Methods -------------------- //
-
-        // Parse an OBJ file
-        bool parseOBJFile(const std::string filename);
-
     public:
 
         // -------------------- Methods -------------------- //
@@ -109,9 +77,6 @@ class Mesh : public Object3D {
 
         // Destroy the mesh
         void destroy();
-
-        // Load a mesh from an OBJ file
-        bool loadFromFile(std::string filename);
 
         // Compute the normals of the mesh
         void calculateNormals();
@@ -137,14 +102,26 @@ class Mesh : public Object3D {
         // Return a reference to the vertices
         const std::vector<Vector3>& getVertices() const;
 
+        // Set the vertices of the mesh
+        void setVertices(std::vector<Vector3>& vertices);
+
         // Return a reference to the normals
         const std::vector<Vector3>& getNormals() const;
+
+        // set the normals of the mesh
+        void setNormals(std::vector<Vector3>& normals);
 
         // Return a reference to the UVs
         const std::vector<Vector2>& getUVs() const;
 
+        // Set the UV texture coordinates of the mesh
+        void setUVs(std::vector<Vector2>& uvs);
+
         // Return a reference to the vertex indices
         const std::vector<uint>& getIndices(uint part = 0) const;
+
+        // Set the vertices indices of the mesh
+        void setIndices(std::vector<std::vector<uint> >& indices);
 
         // Return the coordinates of a given vertex
         const Vector3& getVertex(uint i) const;
@@ -224,9 +201,19 @@ inline const std::vector<Vector3>& Mesh::getVertices() const {
     return mVertices;
 }
 
+// Set the vertices of the mesh
+inline void Mesh::setVertices(std::vector<Vector3>& vertices) {
+    mVertices = vertices;
+}
+
 // Return a reference to the normals
 inline const std::vector<Vector3>& Mesh::getNormals() const {
     return mNormals;
+}
+
+// set the normals of the mesh
+inline void Mesh::setNormals(std::vector<Vector3>& normals) {
+    mNormals = normals;
 }
 
 // Return a reference to the UVs
@@ -234,9 +221,19 @@ inline const std::vector<Vector2>& Mesh::getUVs() const {
     return mUVs;
 }
 
+// Set the UV texture coordinates of the mesh
+inline void Mesh::setUVs(std::vector<Vector2>& uvs) {
+    mUVs = uvs;
+}
+
 // Return a reference to the vertex indices
 inline const std::vector<uint>& Mesh::getIndices(uint part) const {
     return mIndices[part];
+}
+
+// Set the vertices indices of the mesh
+inline void Mesh::setIndices(std::vector<std::vector<uint> >& indices) {
+    mIndices = indices;
 }
 
 // Return the coordinates of a given vertex
