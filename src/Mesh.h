@@ -27,7 +27,6 @@
 #define MESH_H
 
 // Libraries
-// TODO : Remove some includes here (not needed)
 #include <string>
 #include <vector>
 #include "definitions.h"

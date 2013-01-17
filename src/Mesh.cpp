@@ -25,13 +25,6 @@
 
 // Libraries
 #include "Mesh.h"
-#include <fstream>
-#include <sstream>
-#include <locale>
-#include <cctype>
-#include <map>
-#include <string>
-#include <algorithm>
 
 // Namespaces
 using namespace openglframework;
