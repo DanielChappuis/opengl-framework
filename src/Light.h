@@ -81,8 +81,14 @@ class Light : public Object3D {
         // Return the diffuse color
         Color getDiffuseColor() const;
 
+        // Set the diffuse color
+        void setDiffuseColor(const Color& color);
+
         // Return the specular color
         Color getSpecularColor() const;
+
+        // Set the specular color
+        void setSpecularColor(const Color& color);
 
         // Return true if the light is active
         bool getIsActive() const;
@@ -114,9 +120,19 @@ inline Color Light::getDiffuseColor() const {
     return mDiffuseColor;
 }
 
+// Set the diffuse color
+inline void Light::setDiffuseColor(const Color& color) {
+    mDiffuseColor = color;
+}
+
 // Return the specular color
 inline Color Light::getSpecularColor() const {
     return mSpecularColor;
+}
+
+// Set the specular color
+inline void Light::setSpecularColor(const Color& color) {
+    mSpecularColor = color;
 }
 
 // Return true if the light is active
