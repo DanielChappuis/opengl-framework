@@ -205,7 +205,7 @@ bool Mesh::parseOBJFile(const std::string filename) {
             indicesMesh[i] = (unsigned int)mVertices.size();
             vertexMergingMap[vmd] = (unsigned int)mVertices.size();
             mVertices.push_back(vertices[verticesIndices[i]]);
-            if(!normalsIndices.empty()) mNormals.push_back(normals[normalsIndices[i]]);
+            if(!normalsIndices.empty() && !normals.empty()) mNormals.push_back(normals[normalsIndices[i]]);
             if(!uvsIndices.empty()) mUVs.push_back(uvs[uvsIndices[i]]);
         }
     }
@@ -268,8 +268,6 @@ bool Mesh::parseOBJFile(const std::string filename) {
             }
             i+=4;
         }
-
-
     }
 
     return true;
