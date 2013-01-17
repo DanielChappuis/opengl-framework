@@ -38,7 +38,7 @@ Scene::Scene(Viewer* viewer) : mViewer(viewer), mLight0(0),
     mLight0.translateWorld(Vector3(15, 15, 15));
 
     // Load the mesh from a file
-    bool isMeshLoaded = MeshLoader::loadMeshFromFile("torus.obj", mMesh);
+    bool isMeshLoaded = MeshLoader::loadMeshFromFile("torus.odbj", mMesh);
     assert(isMeshLoaded);
 
     // Calculate the normals of the mesh
