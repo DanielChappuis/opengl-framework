@@ -81,10 +81,9 @@ void simulate() {
 
 // Initialization
 void init() {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
 
-    // Move the camera in order to view all the scene
-    viewer->setScenePosition(Vector3(0, 0, 0), 15);
+    // Define the background color (black)
+    glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
 // Reshape function
