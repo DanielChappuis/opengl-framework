@@ -95,7 +95,7 @@ void Scene::renderMesh() {
     Color& specCol = mLight0.getSpecularColor();
     mPhongShader.setVector3Uniform("lightDiffuseColor", Vector3(diffCol.r, diffCol.g, diffCol.b));
     mPhongShader.setVector3Uniform("lightSpecularColor", Vector3(specCol.r, specCol.g, specCol.b));
-    mPhongShader.setFloatUniform("shininess", 1.0f);
+    mPhongShader.setFloatUniform("shininess", 60.0f);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
