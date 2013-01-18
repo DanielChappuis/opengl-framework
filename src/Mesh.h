@@ -29,10 +29,12 @@
 // Libraries
 #include <string>
 #include <vector>
+#include <map>
 #include "definitions.h"
 #include "maths/Vector2.h"
 #include "maths/Vector3.h"
 #include "maths/Color.h"
+#include "Texture2D.h"
 #include "Object3D.h"
 
 namespace openglframework {
@@ -183,7 +185,7 @@ class Mesh : public Object3D {
         void* getIndicesPointer(uint part = 0);
 
         // Return a reference to a texture of the mesh
-        const Texture2D& getTexture(uint part = 0) const;
+        const Texture2D& getTexture(uint part = 0);
 
         // Set a texture to a part of the mesh
         void setTexture(const Texture2D& texture, uint part = 0);
@@ -348,13 +350,13 @@ inline void* Mesh::getIndicesPointer(uint part) {
 }
 
 // Return a reference to a texture of the mesh
-inline const Texture2D& Mesh::getTexture(uint part = 0) const {
+inline const Texture2D& Mesh::getTexture(uint part) {
     return mTextures[part];
 }
 
 // Set a texture to a part of the mesh
-inline void Mesh::setTexture(const Texture2D& texture, uint part = 0) {
-    mTexture[part] = texture;
+inline void Mesh::setTexture(const Texture2D& texture, uint part) {
+    mTextures[part] = texture;
 }
 
 }
