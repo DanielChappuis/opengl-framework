@@ -211,7 +211,7 @@ bool MeshLoader::loadOBJFile(const std::string filename, Mesh& meshToCreate) {
             indicesMesh[i] = (unsigned int)meshVertices.size();
             vertexMergingMap[vmd] = (unsigned int)meshVertices.size();
             meshVertices.push_back(vertices[verticesIndices[i]]);
-            if(!normalsIndices.empty()) meshNormals.push_back(normals[normalsIndices[i]]);
+            if(!normalsIndices.empty() && !normals.empty()) meshNormals.push_back(normals[normalsIndices[i]]);
             if(!uvsIndices.empty()) meshUVs.push_back(uvs[uvsIndices[i]]);
         }
     }
