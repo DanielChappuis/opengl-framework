@@ -64,6 +64,9 @@ class Mesh : public Object3D {
         // UV texture coordinates
         std::vector<Vector2> mUVs;
 
+        // Textures of the mesh (one for each part of the mesh)
+        std::map<uint, Texture2D> mTextures;
+
     public:
 
         // -------------------- Methods -------------------- //
@@ -178,6 +181,12 @@ class Mesh : public Object3D {
 
         // Return a pointer to the vertex indicies data
         void* getIndicesPointer(uint part = 0);
+
+        // Return a reference to a texture of the mesh
+        const Texture2D& getTexture(uint part = 0) const;
+
+        // Set a texture to a part of the mesh
+        void setTexture(const Texture2D& texture, uint part = 0);
 };
 
 // Return the number of triangles
@@ -336,6 +345,16 @@ inline void* Mesh::getUVTextureCoordinatesPointer() {
 // Return a pointer to the vertex indicies data
 inline void* Mesh::getIndicesPointer(uint part) {
     return &(mIndices[part])[0];
+}
+
+// Return a reference to a texture of the mesh
+inline const Texture2D& Mesh::getTexture(uint part = 0) const {
+    return mTextures[part];
+}
+
+// Set a texture to a part of the mesh
+inline void Mesh::setTexture(const Texture2D& texture, uint part = 0) {
+    mTexture[part] = texture;
 }
 
 }
