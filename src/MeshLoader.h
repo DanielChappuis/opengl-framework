@@ -23,23 +23,69 @@
 *                                                                               *
 ********************************************************************************/
 
-#ifndef OPENGL_FRAMEWORK_H
-#define OPENGL_FRAMEWORK_H
+#ifndef MESH_LOADER_H
+#define MESH_LOADER_H
 
 // Libraries
-#include "MeshLoader.h"
-#include "Viewer.h"
-#include "Camera.h"
-#include "Light.h"
+#include <string>
 #include "Mesh.h"
-#include "Shader.h"
-#include "Texture2D.h"
-#include "FrameBufferObject.h"
-#include "Shader.h"
-#include "maths/Color.h"
-#include "maths/Vector2.h"
-#include "maths/Vector3.h"
-#include "maths/Vector4.h"
-#include "maths/Matrix4.h"
+
+namespace openglframework {
+
+// This class is used to load any mesh file in order to
+// create the corresponding Mesh object. Currently, this class
+// is able to load meshes of the current formats : .obj
+class MeshLoader {
+
+    private :
+
+        // -------------------- Methods -------------------- //
+
+        // Load an OBJ file with a triangular or quad mesh
+        static bool loadOBJFile(const std::string filename, Mesh& meshToCreate);
+
+    public :
+
+        // -------------------- Methods -------------------- //
+
+        // Constructor
+        MeshLoader();
+
+        // Destructor();
+        ~MeshLoader();
+
+        // Load a mesh from a file
+        static bool loadMeshFromFile(const std::string& filename, Mesh& meshToCreate);
+};
+
+// Class VertexMergingData
+// This class is used in the method to read a mesh
+class VertexMergingData {
+
+    public:
+        VertexMergingData() : indexPosition(0), indexNormal(0), indexUV(0) {}
+        unsigned int indexPosition;
+        unsigned int indexNormal;
+        unsigned int indexUV;
+};
+
+// Class VertexMergingDataComparison
+// This class is used in the method to read a mesh
+class VertexMergingDataComparison {
+
+    public:
+        bool operator()(const VertexMergingData& x, const VertexMergingData& y) const {
+            if(x.indexPosition < y.indexPosition)
+                return true;
+            if(x.indexPosition == y.indexPosition && x.indexNormal < y.indexNormal)
+                return true;
+            if(x.indexPosition == y.indexPosition && x.indexNormal ==
+                                  y.indexNormal && x.indexUV < y.indexUV)
+                return true;
+            return false;
+    }
+};
+
+}
 
 #endif

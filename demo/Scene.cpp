@@ -37,8 +37,8 @@ Scene::Scene(Viewer* viewer) : mViewer(viewer), mLight0(0),
     // Move the light 0
     mLight0.translateWorld(Vector3(15, 15, 15));
 
-    // Load the mesh
-    bool isMeshLoaded = mMesh.loadFromFile("torus.obj");
+    // Load the mesh from a file
+    bool isMeshLoaded = MeshLoader::loadMeshFromFile("torus.obj", mMesh);
     assert(isMeshLoaded);
 
     // Calculate the normals of the mesh
@@ -95,7 +95,7 @@ void Scene::renderMesh() {
     Color& specCol = mLight0.getSpecularColor();
     mPhongShader.setVector3Uniform("lightDiffuseColor", Vector3(diffCol.r, diffCol.g, diffCol.b));
     mPhongShader.setVector3Uniform("lightSpecularColor", Vector3(specCol.r, specCol.g, specCol.b));
-    mPhongShader.setFloatUniform("shininess", 1.0f);
+    mPhongShader.setFloatUniform("shininess", 60.0f);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
