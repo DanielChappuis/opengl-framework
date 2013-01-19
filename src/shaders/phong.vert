@@ -31,6 +31,7 @@ uniform mat4 projectionMatrix;          // Projection matrix
 // Varying variables
 varying vec3 worldPosition;             // World position of the vertex
 varying vec3 worldNormal;               // World surface normalWorld
+varying vec2 texCoords;                 // Texture coordinates
 
 void main() {
 
@@ -40,6 +41,9 @@ void main() {
 
     // Compute the world surface normal
     worldNormal = (modelToWorldMatrix * vec4(gl_Normal, 0.0)).xyz;
+
+    // Get the texture coordinates
+    texCoords = gl_MultiTexCoord0.xy;
 
     // Compute the clip-space vertex coordinates
     gl_Position = projectionMatrix * worldToCameraMatrix * worldPos;
