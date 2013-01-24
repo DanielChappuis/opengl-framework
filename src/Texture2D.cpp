@@ -105,6 +105,9 @@ void Texture2D::createFromFile(const std::string& filename) {
 
     // Create the OpenGL texture using the TGA bytes
     create(mWidth, mHeight, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, bytes);
+
+    // Delete the data of the picture
+    delete[] bytes;
 }
 
 // Write the texture into a file (TGA picture file)
@@ -181,7 +184,8 @@ char* Texture2D::readTGABytes(const std::string& filename, uint& width, uint& he
     width = header.width;
     height = header.width;
     uint sizeImg = width*height;
-    char *data = new char[sizeImg*3];
+    char* data = new char[sizeImg*3];
+    assert(data);
     stream.read(data, sizeImg*3);
     for(uint i = 0; i < sizeImg; i++) {
         unsigned pos = i*3;
