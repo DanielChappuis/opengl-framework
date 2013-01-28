@@ -28,6 +28,7 @@
 
 // Libraries
 #include <string>
+#include <iostream>
 #include <cassert>
 #include "definitions.h"
 #include <GL/glew.h>
@@ -43,19 +44,16 @@ class Texture2D {
         // -------------------- Attributes -------------------- //
 
         // OpenGL texture ID
-        uint mID;
+        GLuint mID;
 
         // Layer of the texture
-        uint mLayer;
+        GLuint mLayer;
 
         // Width
         uint mWidth;
 
         // Height
         uint mHeight;
-
-        // Bytes of the texture
-        GLubyte* mBytes;
 
         // -------------------- Methods -------------------- //
 

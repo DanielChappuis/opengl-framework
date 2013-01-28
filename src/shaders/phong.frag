@@ -45,13 +45,13 @@ void main() {
 
     // Get the texture color
 
-    vec3 textureColor = vec3(0);
+    vec3 textureColor = vec3(1);
     if (isTexture) textureColor = texture2D(texture, texCoords).rgb;
 
     // Compute the diffuse term
     vec3 L = normalize(lightWorldPosition - worldPosition);
     vec3 N = normalize(worldNormal);
-    vec3 diffuse = lightDiffuseColor * max(dot(N, L), 0.0);
+    vec3 diffuse = lightDiffuseColor * max(dot(N, L), 0.0) * textureColor;
 
     // Compute the specular term
     vec3 V = normalize(cameraWorldPosition - worldPosition);
@@ -59,5 +59,5 @@ void main() {
     vec3 specular = lightSpecularColor * pow(max(dot(N, H), 0), shininess);
 
     // Compute the final color
-    gl_FragColor = vec4(textureColor + ambient + diffuse + specular, 1.0);
+    gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
 }

@@ -67,7 +67,7 @@ class Mesh : public Object3D {
         std::vector<Vector2> mUVs;
 
         // Textures of the mesh (one for each part of the mesh)
-        std::map<uint, Texture2D> mTextures;
+        std::map<uint, Texture2D*> mTextures;
 
     public:
 
@@ -185,10 +185,10 @@ class Mesh : public Object3D {
         void* getIndicesPointer(uint part = 0);
 
         // Return a reference to a texture of the mesh
-        const Texture2D& getTexture(uint part = 0);
+        Texture2D *getTexture(uint part = 0);
 
         // Set a texture to a part of the mesh
-        void setTexture(const Texture2D& texture, uint part = 0);
+        void setTexture(Texture2D *texture, uint part = 0);
 };
 
 // Return the number of triangles
@@ -350,12 +350,12 @@ inline void* Mesh::getIndicesPointer(uint part) {
 }
 
 // Return a reference to a texture of the mesh
-inline const Texture2D& Mesh::getTexture(uint part) {
+inline Texture2D *Mesh::getTexture(uint part) {
     return mTextures[part];
 }
 
 // Set a texture to a part of the mesh
-inline void Mesh::setTexture(const Texture2D& texture, uint part) {
+inline void Mesh::setTexture(Texture2D* texture, uint part) {
     mTextures[part] = texture;
 }
 
