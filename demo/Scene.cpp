@@ -102,8 +102,12 @@ void Scene::renderMesh() {
     if (mMesh.hasUVTextureCoordinates()) {
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     }
+
     glVertexPointer(3, GL_FLOAT, 0, mMesh.getVerticesPointer());
     glNormalPointer(GL_FLOAT, 0, mMesh.getNormalsPointer());
+    if(mMesh.hasUVTextureCoordinates()) {
+        glTexCoordPointer(2, GL_FLOAT, 0, mMesh.getUVTextureCoordinatesPointer());
+    }
 
     // For each part of the mesh
     for (uint i=0; i<mMesh.getNbParts(); i++) {
@@ -114,7 +118,7 @@ void Scene::renderMesh() {
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     if (mMesh.hasUVTextureCoordinates()) {
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 
     // Unbind the shader
