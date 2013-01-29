@@ -41,7 +41,7 @@ MeshReaderWriter::MeshReaderWriter() {
 }
 
 // Load a mesh from a file and returns true if the mesh has been sucessfully loaded
-void MeshReaderWriter::readMeshFromFile(const std::string& filename,
+void MeshReaderWriter::loadMeshFromFile(const std::string& filename,
                                         Mesh& meshToCreate)
                                         throw(std::invalid_argument, std::runtime_error) {
 

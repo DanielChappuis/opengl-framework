@@ -53,7 +53,7 @@ class MeshReaderWriter {
         // -------------------- Methods -------------------- //
 
         // Read a mesh from a file
-        static void readMeshFromFile(const std::string& filename,
+        static void loadMeshFromFile(const std::string& filename,
                                      Mesh& meshToCreate)
                                      throw(std::invalid_argument, std::runtime_error);
 
