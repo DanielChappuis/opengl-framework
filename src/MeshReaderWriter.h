@@ -46,17 +46,21 @@ class MeshReaderWriter {
         MeshReaderWriter();
 
         // Load an OBJ file with a triangular or quad mesh
-        static bool loadOBJFile(const std::string& filename, Mesh& meshToCreate);
+        static void loadOBJFile(const std::string& filename, Mesh& meshToCreate);
 
     public :
 
         // -------------------- Methods -------------------- //
 
         // Read a mesh from a file
-        static bool readMeshFromFile(const std::string& filename, Mesh& meshToCreate);
+        static void readMeshFromFile(const std::string& filename,
+                                     Mesh& meshToCreate)
+                                     throw(std::invalid_argument, std::runtime_error);
 
         // Write a mesh to a file
-        static bool writeMeshToFile(const std::string& filename, const Mesh& meshToWrite);
+        static void writeMeshToFile(const std::string& filename,
+                                    const Mesh& meshToWrite)
+                                    throw(std::invalid_argument, std::runtime_error);
 };
 
 // Class VertexMergingData

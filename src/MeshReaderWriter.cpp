@@ -41,7 +41,9 @@ MeshReaderWriter::MeshReaderWriter() {
 }
 
 // Load a mesh from a file and returns true if the mesh has been sucessfully loaded
-bool MeshReaderWriter::readMeshFromFile(const std::string& filename, Mesh& meshToCreate) {
+void MeshReaderWriter::readMeshFromFile(const std::string& filename,
+                                        Mesh& meshToCreate)
+                                        throw(std::invalid_argument, std::runtime_error) {
 
     // Get the extension of the file
     uint startPosExtension = filename.find_last_of(".");
@@ -54,15 +56,17 @@ bool MeshReaderWriter::readMeshFromFile(const std::string& filename, Mesh& meshT
     else {
 
         // Display an error message and throw an exception
-        string errorMessage("Error : the MeshLoader class cannot load a file with the extension .");
+        string errorMessage("Error : the MeshReaderWriter class cannot load a file with the extension .");
         errorMessage += extension;
         std::cerr << errorMessage << std::endl;
-        throw std::exception(errorMessage.c_str());
+        throw std::invalid_argument(errorMessage.c_str());
     }
 }
 
 // Write a mesh to a file
-bool MeshReaderWriter::writeMeshToFile(const std::string& filename, const Mesh& meshToWrite) {
+void MeshReaderWriter::writeMeshToFile(const std::string& filename,
+                                       const Mesh& meshToWrite)
+                                       throw(std::invalid_argument, std::runtime_error) {
 
     // TODO : Implement this method
 
@@ -70,12 +74,15 @@ bool MeshReaderWriter::writeMeshToFile(const std::string& filename, const Mesh& 
 }
 
 // Load an OBJ file with a triangular or quad mesh
-bool MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
+void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
     // Open the file
     std::ifstream meshFile(filename.c_str());
-    assert(meshFile.is_open());
-    if(!meshFile.is_open()) return false;
+
+    // If we cannot open the file
+    if(!meshFile.is_open()) {
+        throw runtime_error("Error : Cannot open the file " + filename);
+    }
 
     std::string buffer;
     string line, tmp;
@@ -283,6 +290,4 @@ bool MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     meshToCreate.setVertices(meshVertices);
     meshToCreate.setNormals(meshNormals);
     meshToCreate.setUVs(meshUVs);
-
-    return true;
 }

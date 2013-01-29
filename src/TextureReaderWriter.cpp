@@ -53,7 +53,9 @@ typedef struct {
 #pragma pack(pop)
 
 // Load a texture from a file
-bool TextureReaderWriter::loadTextureFromFile(const std::string& filename, Texture2D& textureToCreate) {
+bool TextureReaderWriter::loadTextureFromFile(const std::string& filename,
+                                              Texture2D& textureToCreate)
+                                              throw(runtime_error, invalid_argument){
 
     // Get the extension of the file
     uint startPosExtension = filename.find_last_of(".");
@@ -69,22 +71,46 @@ bool TextureReaderWriter::loadTextureFromFile(const std::string& filename, Textu
         string errorMessage("Error : the TextureLoader class cannot load a file with the extension .");
         errorMessage += extension;
         std::cerr << errorMessage << std::endl;
-        throw std::exception(errorMessage.c_str());
+        throw std::invalid_argument(errorMessage.c_str());
     }
 }
 
 // Write a texture to a file
-void writeTextureToFile(const std::string& filename, const Texture2D& texture) {
+void TextureReaderWriter::writeTextureToFile(const std::string& filename,
+                                             const Texture2D& texture)
+                                             throw(runtime_error, invalid_argument){
 
+    // Get the extension of the file
+    uint startPosExtension = filename.find_last_of(".");
+    string extension = filename.substr(startPosExtension+1);
+
+    // Write the file using the correct method
+    if (extension == "tga") {
+        writeTGAPicture(filename, texture);
+    }
+    else {
+
+        // Display an error message and throw an exception
+        string errorMessage("Error : the TextureReaderWriter class cannot write a file with the extension .");
+        errorMessage += extension;
+        std::cerr << errorMessage << std::endl;
+        throw std::invalid_argument(errorMessage.c_str());
+    }
 }
 
 // Load a TGA picture
-bool TextureReaderWriter::readTGAPicture(const std::string &filename, Texture2D& textureToCreate) {
+bool TextureReaderWriter::readTGAPicture(const std::string &filename,
+                                         Texture2D& textureToCreate) throw(runtime_error) {
 
     // Open the file
     std::ifstream stream(filename.c_str(), std::ios::binary);
-    assert(stream.is_open());
-    if(!stream.is_open()) return NULL;
+
+    // If we cannot open the file
+    if(!stream.is_open()) {
+
+        // Throw an exception
+        throw std::runtime_error("Error : Cannot open the file " + filename);
+    }
 
     TGA_HEADER header;
     stream.read((char *)(&header), sizeof(TGA_HEADER));
@@ -118,7 +144,7 @@ bool TextureReaderWriter::readTGAPicture(const std::string &filename, Texture2D&
 
 // Write a TGA picture
 void TextureReaderWriter::writeTGAPicture(const std::string& filename,
-                                          const Texture2D& texture) {
+                                          const Texture2D& texture) throw(runtime_error) {
     assert(texture.getID() != 0);
 
     // Bind the corresponding texture
@@ -132,8 +158,13 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
 
     // Open the file
     std::ofstream stream(filename.c_str(), std::ios::binary);
-    assert(stream.is_open());
-    if(!stream.is_open()) return;
+
+    // If the file cannot be opened
+    if(!stream.is_open()) {
+
+        // Throw an exception
+        throw std::runtime_error("Error : Cannot create/access the file " + filename);
+    }
 
     // Fill in the TGA header
     TGA_HEADER header;
