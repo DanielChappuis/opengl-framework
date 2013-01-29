@@ -38,8 +38,6 @@ Mesh::Mesh() {
 // Destructor
 Mesh::~Mesh() {
 
-    // Destroy the mesh
-    destroy();
 }
 
 // Destroy the mesh
@@ -51,6 +49,7 @@ void Mesh::destroy() {
     mIndices.clear();
     mColors.clear();
     mUVs.clear();
+    mTextures.clear();
 }
 
 // Compute the normals of the mesh

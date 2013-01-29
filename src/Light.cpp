@@ -46,8 +46,6 @@ Light::Light(GLuint id, Color diffuseColor, Color specularColor)
 // Destructor
 Light::~Light() {
 
-    // Destroy the shadow map associated with this light
-    destroyShadowMap();
 }
 
 // Initialize the light

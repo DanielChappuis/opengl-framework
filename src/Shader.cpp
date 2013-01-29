@@ -49,11 +49,6 @@ Shader::Shader(const std::string vertexShaderFilename, const std::string fragmen
 // Destructor
 Shader::~Shader() {
 
-    // If the assigned program object ID is different from zero
-    if (mProgramObjectID) {
-        // Delete the shader from OpenGL context
-        glDeleteShader(mProgramObjectID);
-    }
 }
 
 // Create the shader

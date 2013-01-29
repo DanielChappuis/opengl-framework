@@ -38,8 +38,6 @@ FrameBufferObject::FrameBufferObject() : mFrameBufferID(0), mRenderBufferID (0) 
 // Destructor
 FrameBufferObject::~FrameBufferObject() {
 
-    // Destroy the FBO
-    destroy();
 }
 
 // Create the frame buffer object
