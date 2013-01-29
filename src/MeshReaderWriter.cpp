@@ -24,7 +24,7 @@
 ********************************************************************************/
 
 // Libraries
-#include "MeshLoader.h"
+#include "MeshReaderWriter.h"
 #include <fstream>
 #include <sstream>
 #include <locale>
@@ -36,17 +36,12 @@ using namespace openglframework;
 using namespace std;
 
 // Constructor
-MeshLoader::MeshLoader() {
-
-}
-
-// Destructor();
-MeshLoader::~MeshLoader() {
+MeshReaderWriter::MeshReaderWriter() {
 
 }
 
 // Load a mesh from a file and returns true if the mesh has been sucessfully loaded
-bool MeshLoader::loadMeshFromFile(const std::string& filename, Mesh& meshToCreate) {
+bool MeshReaderWriter::readMeshFromFile(const std::string& filename, Mesh& meshToCreate) {
 
     // Get the extension of the file
     uint startPosExtension = filename.find_last_of(".");
@@ -66,8 +61,16 @@ bool MeshLoader::loadMeshFromFile(const std::string& filename, Mesh& meshToCreat
     }
 }
 
+// Write a mesh to a file
+bool MeshReaderWriter::writeMeshToFile(const std::string& filename, const Mesh& meshToWrite) {
+
+    // TODO : Implement this method
+
+    throw std::exception("Error : This method is not implemented yet !");
+}
+
 // Load an OBJ file with a triangular or quad mesh
-bool MeshLoader::loadOBJFile(const std::string filename, Mesh& meshToCreate) {
+bool MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
     // Open the file
     std::ifstream meshFile(filename.c_str());

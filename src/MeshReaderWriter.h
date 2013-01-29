@@ -32,30 +32,31 @@
 
 namespace openglframework {
 
-// This class is used to load any mesh file in order to
+// Class MeshReaderWriter
+// This class is used to read or write any mesh file in order to
 // create the corresponding Mesh object. Currently, this class
-// is able to load meshes of the current formats : .obj
-class MeshLoader {
+// is able to read meshes of the current formats : .obj
+class MeshReaderWriter {
 
     private :
 
         // -------------------- Methods -------------------- //
 
+        // Constructor (private because we do not want instances of this class)
+        MeshReaderWriter();
+
         // Load an OBJ file with a triangular or quad mesh
-        static bool loadOBJFile(const std::string filename, Mesh& meshToCreate);
+        static bool loadOBJFile(const std::string& filename, Mesh& meshToCreate);
 
     public :
 
         // -------------------- Methods -------------------- //
 
-        // Constructor
-        MeshLoader();
+        // Read a mesh from a file
+        static bool readMeshFromFile(const std::string& filename, Mesh& meshToCreate);
 
-        // Destructor();
-        ~MeshLoader();
-
-        // Load a mesh from a file
-        static bool loadMeshFromFile(const std::string& filename, Mesh& meshToCreate);
+        // Write a mesh to a file
+        static bool writeMeshToFile(const std::string& filename, const Mesh& meshToWrite);
 };
 
 // Class VertexMergingData

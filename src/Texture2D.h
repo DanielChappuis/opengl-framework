@@ -28,7 +28,6 @@
 
 // Libraries
 #include <string>
-#include <iostream>
 #include <cassert>
 #include "definitions.h"
 #include <GL/glew.h>
@@ -55,11 +54,6 @@ class Texture2D {
         // Height
         uint mHeight;
 
-        // -------------------- Methods -------------------- //
-
-        // Read and return the bytes of a TGA file
-        char* readTGABytes(const std::string& filename, uint& width, uint& height);
-
     public:
 
         // -------------------- Methods -------------------- //
@@ -77,14 +71,8 @@ class Texture2D {
         void create(uint width, uint height, uint internalFormat, uint format, uint type,
                     void* data = NULL);
 
-        // Create a texture from a file (TGA picture file)
-        void createFromFile(const std::string& filename);
-
         // Destroy the texture
         void destroy();
-
-        // Write the texture into a file (TGA picture file)
-        void writeToFile(const std::string& filename);
 
         // Bind the texture
         void bind() const;

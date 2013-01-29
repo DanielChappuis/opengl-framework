@@ -23,65 +23,45 @@
 *                                                                               *
 ********************************************************************************/
 
+#ifndef TEXTURE_READER_WRITER_H
+#define TEXTURE_READER_WRITER_H
+
 // Libraries
 #include "Texture2D.h"
 #include <fstream>
 #include <iostream>
 
-// Namespaces
-using namespace openglframework;
+namespace openglframework {
 
-// Constructor
-Texture2D::Texture2D() : mID(0), mLayer(0), mWidth(0), mHeight(0) {
+// Class TextureReaderWriter
+// This class is used to load or write a texture image in different picture format.
+// It currently allows to read and write the following formats : .tga
+class TextureReaderWriter {
+
+    private :
+
+        // -------------------- Methods -------------------- //
+
+        // Constructor (private because we do not want instances of this class)
+        TextureReaderWriter();
+
+        // Read a TGA picture
+        static bool readTGAPicture(const std::string& filename, Texture2D& textureToCreate);
+
+        // Write a TGA picture
+        static void writeTGAPicture(const std::string& filename, const Texture2D& texture);
+
+    public :
+
+        // -------------------- Methods -------------------- //
+
+        // Load a texture from a file
+        static bool loadTextureFromFile(const std::string& filename, Texture2D& textureToCreate);
+
+        // Write a texture to a file
+        static void writeTextureToFile(const std::string& filename, const Texture2D& texture);
+};
 
 }
 
-// Constructor
-Texture2D::Texture2D(uint width, uint height, uint internalFormat, uint format, uint type)
-          : mID(0), mLayer(0), mWidth(0), mHeight(0){
-
-    // Create the texture
-    create(width, height, internalFormat, format, type);
-}
-
-// Destructor
-Texture2D::~Texture2D() {
-
-    // Destroy the texture
-    destroy();
-}
-
-// Create the texture
-void Texture2D::create(uint width, uint height, uint internalFormat, uint format, uint type,
-            void* data) {
-
-    assert(width <= 4096 && height <= 4096);
-
-    // Destroy the current texture
-    destroy();
-
-    mWidth = width;
-    mHeight = height;
-
-    // Create the OpenGL texture
-    glGenTextures(1, &mID);
-    assert(mID != 0);
-    glBindTexture(GL_TEXTURE_2D, mID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, mWidth, mHeight, 0, format, type, data);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-// Destroy the texture
-void Texture2D::destroy() {
-    if (mID != 0) {
-        glDeleteTextures(1, &mID);
-        mID = 0;
-        mLayer = 0;
-        mWidth = 0;
-        mHeight = 0;
-    }
-}
+#endif
