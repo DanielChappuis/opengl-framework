@@ -145,14 +145,14 @@ inline void Light::enable() {
 
     // Enable the light
     glEnable(GL_LIGHTING);
-    glEnable(mLightID);
+    glEnable(GL_LIGHT0 + mLightID);
 }
 
 // Disable the light
 inline void Light::disable() {
 
     // Disable the light
-    glDisable(mLightID);
+    glDisable(GL_LIGHT0 + mLightID);
 }
 
 // Destroy the shadow map associated with this light
