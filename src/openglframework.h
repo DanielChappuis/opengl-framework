@@ -42,5 +42,6 @@
 #include "maths/Vector3.h"
 #include "maths/Vector4.h"
 #include "maths/Matrix4.h"
+#include "definitions.h"
 
 #endif
