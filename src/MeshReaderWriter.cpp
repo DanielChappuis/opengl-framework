@@ -81,7 +81,11 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
     // If we cannot open the file
     if(!meshFile.is_open()) {
-        throw runtime_error("Error : Cannot open the file " + filename);
+
+        // Throw an exception and display an error message
+        string errorMessage("Error : Cannot open the file " + filename);
+        std::cerr << errorMessage << std::endl;
+        throw runtime_error(errorMessage);
     }
 
     std::string buffer;
@@ -129,10 +133,16 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
             line = buffer;
             found1 = (int)line.find("/");
             bool isFaceQuad = false;
+            int foundNext = (int)line.substr(found1+1).find("/");
 
-            // If the face definition only contains vertices (and not texture coordinates)
+            // If the face definition is of the form "f v1 v2 v3 v4"
             if(found1 == string::npos) {
                 int nbVertices = sscanf_s(buffer.c_str(), "%*s %d %d %d %d", &id1, &id2, &id3, &id4);
+                if (nbVertices == 4) isFaceQuad = true;
+            }
+            // If the face definition is of the form "f v1// v2// v3// v4//"
+            else if (foundNext = found1 + 1) {
+                int nbVertices = sscanf_s(buffer.c_str(), "%*s %d// %d// %d// %d//", &id1, &id2, &id3, &id4);
                 if (nbVertices == 4) isFaceQuad = true;
             }
             else {  // If the face definition contains vertices and texture coordinates
