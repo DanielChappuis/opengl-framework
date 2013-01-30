@@ -143,6 +143,8 @@ inline bool Light::getIsActive() const {
 // Enable the light
 inline void Light::enable() {
 
+    mIsActive = true;
+
     // Enable the light
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0 + mLightID);
@@ -150,6 +152,8 @@ inline void Light::enable() {
 
 // Disable the light
 inline void Light::disable() {
+
+    mIsActive = false;
 
     // Disable the light
     glDisable(GL_LIGHT0 + mLightID);
