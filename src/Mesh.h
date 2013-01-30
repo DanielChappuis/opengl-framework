@@ -145,6 +145,9 @@ class Mesh : public Object3D {
         // Set the color of a given vertex
         void setColor(uint i, const Color& color);
 
+        // Set a color to all the vertices
+        void setColorToAllVertices(const Color& color);
+
         // Return the UV of a given vertex
         const Vector2& getUV(uint i) const;
 
@@ -278,8 +281,32 @@ inline const Color& Mesh::getColor(uint i) const {
 
 // Set the color of a given vertex
 inline void Mesh::setColor(uint i, const Color& color) {
-    assert(i < getNbVertices());
+
+    // If the color array does not have the same size as
+    // the vertices array
+    if (mColors.size() != mVertices.size()) {
+
+        // Create the color array with the same size
+        mColors = std::vector<Color>(mVertices.size());
+    }
+
     mColors[i] = color;
+}
+
+// Set a color to all the vertices
+inline void Mesh::setColorToAllVertices(const Color& color) {
+
+    // If the color array does not have the same size as
+    // the vertices array
+    if (mColors.size() != mVertices.size()) {
+
+        // Create the color array with the same size
+        mColors = std::vector<Color>(mVertices.size());
+    }
+
+    for (int v=0; v<mVertices.size(); v++) {
+        mColors[v] = color;
+    }
 }
 
 // Return the UV of a given vertex
