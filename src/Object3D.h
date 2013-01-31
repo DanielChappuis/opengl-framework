@@ -129,7 +129,7 @@ inline void Object3D::rotateAroundLocalPoint(const Vector3& axis, float angle,
                                              const Vector3& worldPoint) {
 
     // Convert the world point into the local coordinate system
-    Vector3 localPoint = mTransformMatrix.inverse() * worldPoint;
+    Vector3 localPoint = mTransformMatrix.getInverse() * worldPoint;
 
     mTransformMatrix = mTransformMatrix * Matrix4::translationMatrix(localPoint)
                        * Matrix4::rotationMatrix(axis, angle)

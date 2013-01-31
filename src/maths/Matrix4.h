@@ -206,7 +206,7 @@ class Matrix4 {
         }
 
         // Return the transpose matrix
-        Matrix4 transpose() const {
+        Matrix4 getTranspose() const {
             return Matrix4(m[0][0], m[1][0], m[2][0], m[3][0],
                            m[0][1], m[1][1], m[2][1], m[3][1],
                            m[0][2], m[1][2], m[2][2], m[3][2],
@@ -214,7 +214,7 @@ class Matrix4 {
         }
 
         // Return the inversed matrix
-        Matrix4 inverse() const {
+        Matrix4 getInverse() const {
             int indxc[4], indxr[4];
             int ipiv[4] = { 0, 0, 0, 0 };
             float minv[4][4];
@@ -306,7 +306,7 @@ class Matrix4 {
                 for (int j=0; j<4; j++) {
                     std::cout << m[i][j];
                 }
-                std::cout << "\n";
+                std::cout << std::endl;
             }
         }
 
@@ -324,6 +324,12 @@ class Matrix4 {
         float getValue(int i, int j) const {
             assert(i >= 0 && i<4 && j >= 0 && j<4);
             return m[i][j];
+        }
+
+        // Return the trace of the matrix
+        float getTrace() const {
+            // Compute and return the trace
+            return (m[0][0] + m[1][1] + m[2][2] + m[3][3]);
         }
 
         // Return a 4x4 translation matrix

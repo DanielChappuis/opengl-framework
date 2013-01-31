@@ -79,7 +79,7 @@ void Camera::updateProjectionMatrix() {
 void Camera::translateCamera(float dx, float dy, const Vector3& worldPoint) {
 
     // Transform the world point into camera coordinates
-    Vector3 pointCamera = mTransformMatrix.inverse() * worldPoint;
+    Vector3 pointCamera = mTransformMatrix.getInverse() * worldPoint;
 
     // Get the depth
     float z = -pointCamera.z;
