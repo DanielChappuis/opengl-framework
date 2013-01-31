@@ -87,7 +87,7 @@ void Scene::renderMesh() {
     matrixIdentity.setToIdentity();
     mPhongShader.setVector3Uniform("cameraWorldPosition", mViewer->getCamera().getOrigin());
     mPhongShader.setMatrix4x4Uniform("modelToWorldMatrix", mMesh.getTransformMatrix());
-    mPhongShader.setMatrix4x4Uniform("worldToCameraMatrix", camera.getTransformMatrix().inverse());
+    mPhongShader.setMatrix4x4Uniform("worldToCameraMatrix", camera.getTransformMatrix().getInverse());
     mPhongShader.setMatrix4x4Uniform("projectionMatrix", camera.getProjectionMatrix());
     mPhongShader.setVector3Uniform("lightWorldPosition", mLight0.getOrigin());
     mPhongShader.setVector3Uniform("lightAmbientColor", Vector3(0.3f, 0.3f, 0.3f));
