@@ -132,20 +132,20 @@ class Matrix3 {
         Matrix3 getInverse() const {
 
             // Compute the determinant of the matrix
-            decimal determinant = getDeterminant();
+            float determinant = getDeterminant();
 
             // Check if the determinant is equal to zero
             assert(determinant != 0.0);
-            decimal invDeterminant = 1.0 / determinant;
+            float invDeterminant = 1.0 / determinant;
             Matrix3 tempMatrix;
 
             // Compute the inverse of the matrix
-            tempMatrix.setAllValues((array[1][1]*array[2][2]-array[2][1]*array[1][2]), -(array[1][0]*array[2][2]-array[2][0]*array[1][2]), (array[1][0]*array[2][1]-array[2][0]*array[1][1]),
-                                    -(array[0][1]*array[2][2]-array[2][1]*array[0][2]), (array[0][0]*array[2][2]-array[2][0]*array[0][2]), -(array[0][0]*array[2][1]-array[2][0]*array[0][1]),
-                                    (array[0][1]*array[1][2]-array[0][2]*array[1][1]), -(array[0][0]*array[1][2]-array[1][0]*array[0][2]), (array[0][0]*array[1][1]-array[0][1]*array[1][0]));
+            tempMatrix.setAllValues((m[1][1]*m[2][2]-m[2][1]*m[1][2]), -(m[1][0]*m[2][2]-m[2][0]*m[1][2]), (m[1][0]*m[2][1]-m[2][0]*m[1][1]),
+                                    -(m[0][1]*m[2][2]-m[2][1]*m[0][2]), (m[0][0]*m[2][2]-m[2][0]*m[0][2]), -(m[0][0]*m[2][1]-m[2][0]*m[0][1]),
+                                    (m[0][1]*m[1][2]-m[0][2]*m[1][1]), -(m[0][0]*m[1][2]-m[1][0]*m[0][2]), (m[0][0]*m[1][1]-m[0][1]*m[1][0]));
 
             // Return the inverse matrix
-            return (invDeterminant * tempMatrix.getTranspose());
+            return (tempMatrix.getTranspose() * invDeterminant);
         }
 
         // Display the matrix
@@ -159,56 +159,51 @@ class Matrix3 {
         }
 
         // Overloaded operator for addition
-        Matrix3 operator+(const Matrix3& matrix1, const Matrix3& matrix2) {
-            return Matrix3(matrix1.m[0][0] + matrix2.m[0][0], matrix1.m[0][1] + matrix2.m[0][1], matrix1.m[0][2] + matrix2.m[0][2],
-                           matrix1.m[1][0] + matrix2.m[1][0], matrix1.m[1][1] + matrix2.m[1][1], matrix1.m[1][2] + matrix2.m[1][2],
-                           matrix1.m[2][0] + matrix2.m[2][0], matrix1.m[2][1] + matrix2.m[2][1], matrix1.m[2][2] + matrix2.m[2][2]);
+        Matrix3 operator+(const Matrix3& matrix2) {
+            return Matrix3(m[0][0] + matrix2.m[0][0], m[0][1] + matrix2.m[0][1], m[0][2] + matrix2.m[0][2],
+                           m[1][0] + matrix2.m[1][0], m[1][1] + matrix2.m[1][1], m[1][2] + matrix2.m[1][2],
+                           m[2][0] + matrix2.m[2][0], m[2][1] + matrix2.m[2][1], m[2][2] + matrix2.m[2][2]);
         }
 
         // Overloaded operator for substraction
-        Matrix3 operator-(const Matrix3& matrix1, const Matrix3& matrix2) {
-            return Matrix3(matrix1.m[0][0] - matrix2.m[0][0], matrix1.m[0][1] - matrix2.m[0][1], matrix1.m[0][2] - matrix2.m[0][2],
-                           matrix1.m[1][0] - matrix2.m[1][0], matrix1.m[1][1] - matrix2.m[1][1], matrix1.m[1][2] - matrix2.m[1][2],
-                           matrix1.m[2][0] - matrix2.m[2][0], matrix1.m[2][1] - matrix2.m[2][1], matrix1.m[2][2] - matrix2.m[2][2]);
+        Matrix3 operator-(const Matrix3& matrix2) {
+            return Matrix3(m[0][0] - matrix2.m[0][0], m[0][1] - matrix2.m[0][1], m[0][2] - matrix2.m[0][2],
+                           m[1][0] - matrix2.m[1][0], m[1][1] - matrix2.m[1][1], m[1][2] - matrix2.m[1][2],
+                           m[2][0] - matrix2.m[2][0], m[2][1] - matrix2.m[2][1], m[2][2] - matrix2.m[2][2]);
         }
 
         // Overloaded operator for the negative of the matrix
-        Matrix3 operator-(const Matrix3& matrix) {
-            return Matrix3(-matrix.m[0][0], -matrix.m[0][1], -matrix.m[0][2],
-                           -matrix.m[1][0], -matrix.m[1][1], -matrix.m[1][2],
-                           -matrix.m[2][0], -matrix.m[2][1], -matrix.m[2][2]);
+        Matrix3 operator-() {
+            return Matrix3(-m[0][0], -m[0][1], -m[0][2],
+                           -m[1][0], -m[1][1], -m[1][2],
+                           -m[2][0], -m[2][1], -m[2][2]);
         }
 
         // Overloaded operator for multiplication with a number
-        Matrix3 operator*(float nb, const Matrix3& matrix) {
-            return Matrix3(matrix.m[0][0] * nb, matrix.m[0][1] * nb, matrix.m[0][2] * nb,
-                           matrix.m[1][0] * nb, matrix.m[1][1] * nb, matrix.m[1][2] * nb,
-                           matrix.m[2][0] * nb, matrix.m[2][1] * nb, matrix.m[2][2] * nb);
-        }
-
-        // Overloaded operator for multiplication with a matrix
-        Matrix3 operator*(const Matrix3& matrix, float nb) {
-            return nb * matrix;
+        Matrix3 operator*(float nb) {
+            return Matrix3(m[0][0] * nb, m[0][1] * nb, m[0][2] * nb,
+                           m[1][0] * nb, m[1][1] * nb, m[1][2] * nb,
+                           m[2][0] * nb, m[2][1] * nb, m[2][2] * nb);
         }
 
         // Overloaded operator for matrix multiplication
-        Matrix3 operator*(const Matrix3& matrix1, const Matrix3& matrix2) {
-            return Matrix3(matrix1.m[0][0]*matrix2.m[0][0] + matrix1.m[0][1]*matrix2.m[1][0] + matrix1.m[0][2]*matrix2.m[2][0],
-                           matrix1.m[0][0]*matrix2.m[0][1] + matrix1.m[0][1]*matrix2.m[1][1] + matrix1.m[0][2]*matrix2.m[2][1],
-                           matrix1.m[0][0]*matrix2.m[0][2] + matrix1.m[0][1]*matrix2.m[1][2] + matrix1.m[0][2]*matrix2.m[2][2],
-                           matrix1.m[1][0]*matrix2.m[0][0] + matrix1.m[1][1]*matrix2.m[1][0] + matrix1.m[1][2]*matrix2.m[2][0],
-                           matrix1.m[1][0]*matrix2.m[0][1] + matrix1.m[1][1]*matrix2.m[1][1] + matrix1.m[1][2]*matrix2.m[2][1],
-                           matrix1.m[1][0]*matrix2.m[0][2] + matrix1.m[1][1]*matrix2.m[1][2] + matrix1.m[1][2]*matrix2.m[2][2],
-                           matrix1.m[2][0]*matrix2.m[0][0] + matrix1.m[2][1]*matrix2.m[1][0] + matrix1.m[2][2]*matrix2.m[2][0],
-                           matrix1.m[2][0]*matrix2.m[0][1] + matrix1.m[2][1]*matrix2.m[1][1] + matrix1.m[2][2]*matrix2.m[2][1],
-                           matrix1.m[2][0]*matrix2.m[0][2] + matrix1.m[2][1]*matrix2.m[1][2] + matrix1.m[2][2]*matrix2.m[2][2]);
+        Matrix3 operator*(const Matrix3& matrix2) {
+            return Matrix3(m[0][0]*matrix2.m[0][0] + m[0][1]*matrix2.m[1][0] + m[0][2]*matrix2.m[2][0],
+                           m[0][0]*matrix2.m[0][1] + m[0][1]*matrix2.m[1][1] + m[0][2]*matrix2.m[2][1],
+                           m[0][0]*matrix2.m[0][2] + m[0][1]*matrix2.m[1][2] + m[0][2]*matrix2.m[2][2],
+                           m[1][0]*matrix2.m[0][0] + m[1][1]*matrix2.m[1][0] + m[1][2]*matrix2.m[2][0],
+                           m[1][0]*matrix2.m[0][1] + m[1][1]*matrix2.m[1][1] + m[1][2]*matrix2.m[2][1],
+                           m[1][0]*matrix2.m[0][2] + m[1][1]*matrix2.m[1][2] + m[1][2]*matrix2.m[2][2],
+                           m[2][0]*matrix2.m[0][0] + m[2][1]*matrix2.m[1][0] + m[2][2]*matrix2.m[2][0],
+                           m[2][0]*matrix2.m[0][1] + m[2][1]*matrix2.m[1][1] + m[2][2]*matrix2.m[2][1],
+                           m[2][0]*matrix2.m[0][2] + m[2][1]*matrix2.m[1][2] + m[2][2]*matrix2.m[2][2]);
         }
 
         // Overloaded operator for multiplication with a vector
-        Vector3 operator*(const Matrix3& matrix, const Vector3& vector) {
-            return Vector3(matrix.m[0][0]*vector.getX() + matrix.m[0][1]*vector.getY() + matrix.m[0][2]*vector.getZ(),
-                           matrix.m[1][0]*vector.getX() + matrix.m[1][1]*vector.getY() + matrix.m[1][2]*vector.getZ(),
-                           matrix.m[2][0]*vector.getX() + matrix.m[2][1]*vector.getY() + matrix.m[2][2]*vector.getZ());
+        Vector3 operator*(const Vector3& vector) {
+            return Vector3(m[0][0]*vector.x + m[0][1]*vector.y + m[0][2]*vector.z,
+                           m[1][0]*vector.x + m[1][1]*vector.y + m[1][2]*vector.z,
+                           m[2][0]*vector.x + m[2][1]*vector.y + m[2][2]*vector.z);
         }
 
         // Overloaded operator for equality condition
