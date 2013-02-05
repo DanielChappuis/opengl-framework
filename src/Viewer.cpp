@@ -50,10 +50,12 @@ bool Viewer::init(int argc, char** argv, const string& windowsTitle,
                     const Vector2& windowsSize, const Vector2& windowsPosition) {
 
     // Initialize the GLUT library
-    return initGLUT(argc, argv, windowsTitle, windowsSize, windowsPosition);
+    bool outputValue = initGLUT(argc, argv, windowsTitle, windowsSize, windowsPosition);
 
     // Active the multi-sampling by default
-    activateMultiSampling(true);
+    //activateMultiSampling(true);
+
+    return outputValue;
 }
 
 // Initialize the GLUT library
@@ -62,7 +64,7 @@ bool Viewer::initGLUT(int argc, char** argv, const string& windowsTitle,
 
     // Initialize GLUT
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GL_MULTISAMPLE);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );//| GL_MULTISAMPLE);
 
     // Initialize the size of the GLUT windows
     glutInitWindowSize(static_cast<int>(windowsSize.x),
