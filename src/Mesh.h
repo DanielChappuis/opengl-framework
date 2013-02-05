@@ -304,7 +304,7 @@ inline void Mesh::setColorToAllVertices(const Color& color) {
         mColors = std::vector<Color>(mVertices.size());
     }
 
-    for (int v=0; v<mVertices.size(); v++) {
+    for (size_t v=0; v<mVertices.size(); v++) {
         mColors[v] = color;
     }
 }

@@ -114,12 +114,13 @@ class Vector2 {
                 case 0: return x;
                 case 1: return y;
             }
+            return y;
         }
 
         // Normalize the vector and return it
         Vector2 normalize() {
-            assert(length() > 0);
             float l = length();
+            assert(l > 0);
             x /= l;
             y /= l;
             return *this;

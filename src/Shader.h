@@ -135,7 +135,7 @@ inline void Shader::bind() const {
 // Unbind the shader
 inline void Shader::unbind() const {
     assert(mProgramObjectID != 0);
-    glUseProgram(NULL);
+    glUseProgram(0);
 }
 
 // Return the location of a uniform variable inside a shader program

@@ -115,6 +115,7 @@ class Vector4 {
             case 2: return z;
             case 3: return w;
             }
+            return w;
         }
 
         // Dot product operator

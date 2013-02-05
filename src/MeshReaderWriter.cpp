@@ -70,7 +70,7 @@ void MeshReaderWriter::writeMeshToFile(const std::string& filename,
 
     // TODO : Implement this method
 
-    throw std::exception("Error : This method is not implemented yet !");
+    throw std::string("Error : This method is not implemented yet !");
 }
 
 // Load an OBJ file with a triangular or quad mesh
@@ -94,7 +94,7 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     int nId1, nId2, nId3, nId4;
     int tId1, tId2, tId3, tId4;
     float v1, v2, v3;
-    int found1, found2;
+    size_t found1, found2;
     std::vector<bool> isQuad;
     std::vector<Vector3> vertices;
     std::vector<Vector3> normals;
@@ -118,31 +118,31 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
         }
         else if(word == "v") {  // Vertex position
-            sscanf_s(buffer.c_str(), "%*s %f %f %f", &v1, &v2, &v3);
+            sscanf(buffer.c_str(), "%*s %f %f %f", &v1, &v2, &v3);
             vertices.push_back(Vector3(v1, v2, v3));
         }
         else if(word == "vt") { // Vertex texture coordinate
-            sscanf_s(buffer.c_str(), "%*s %f %f", &v1, &v2);
+            sscanf(buffer.c_str(), "%*s %f %f", &v1, &v2);
             uvs.push_back(Vector2(v1,v2));
         }
         else if(word == "vn") { // Vertex normal
-            sscanf_s(buffer.c_str(), "%*s %f %f %f", &v1, &v2, &v3);
+            sscanf(buffer.c_str(), "%*s %f %f %f", &v1, &v2, &v3);
             normals.push_back(Vector3(v1 ,v2, v3));
         }
         else if (word == "f") { // Face
             line = buffer;
             found1 = (int)line.find("/");
             bool isFaceQuad = false;
-            int foundNext = (int)line.substr(found1+1).find("/");
+            size_t foundNext = (int)line.substr(found1+1).find("/");
 
             // If the face definition is of the form "f v1 v2 v3 v4"
             if(found1 == string::npos) {
-                int nbVertices = sscanf_s(buffer.c_str(), "%*s %d %d %d %d", &id1, &id2, &id3, &id4);
+                int nbVertices = sscanf(buffer.c_str(), "%*s %d %d %d %d", &id1, &id2, &id3, &id4);
                 if (nbVertices == 4) isFaceQuad = true;
             }
             // If the face definition is of the form "f v1// v2// v3// v4//"
-            else if (foundNext = found1 + 1) {
-                int nbVertices = sscanf_s(buffer.c_str(), "%*s %d// %d// %d// %d//", &id1, &id2, &id3, &id4);
+            else if (foundNext == found1 + 1) {
+                int nbVertices = sscanf(buffer.c_str(), "%*s %d// %d// %d// %d//", &id1, &id2, &id3, &id4);
                 if (nbVertices == 4) isFaceQuad = true;
             }
             else {  // If the face definition contains vertices and texture coordinates
@@ -155,7 +155,7 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
                 // If the face definition is of the form "f vert1/textcoord1 vert2/textcoord2 ..."
                 if(found2 == string::npos) {
-                    int n = sscanf_s(buffer.c_str(), "%*s %d/%d %d/%d %d/%d %d/%d", &id1, &tId1, &id2, &tId2, &id3, &tId3, &id4, &tId4);
+                    int n = sscanf(buffer.c_str(), "%*s %d/%d %d/%d %d/%d %d/%d", &id1, &tId1, &id2, &tId2, &id3, &tId3, &id4, &tId4);
                     if (n == 8) isFaceQuad = true;
                     uvsIndices.push_back(tId1-1);
                     uvsIndices.push_back(tId2-1);
@@ -168,12 +168,12 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
                     // If the face definition is of the form "f vert1/normal1 vert2/normal2 ..."
                     if(found2 == 0) {
-                        int n = sscanf_s(buffer.c_str(), "%*s %d//%d %d//%d %d//%d %d//%d", &id1, &nId1, &id2, &nId2, &id3, &nId3, &id4, &nId4);
+                        int n = sscanf(buffer.c_str(), "%*s %d//%d %d//%d %d//%d %d//%d", &id1, &nId1, &id2, &nId2, &id3, &nId3, &id4, &nId4);
                         if (n == 8) isFaceQuad = true;
                     }
                     // If the face definition is of the form "f vert1/textcoord1/normal1 ..."
                     else {
-                        int n = sscanf_s(buffer.c_str(), "%*s %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &id1, &tId1, &nId1, &id2, &tId2, &nId2, &id3, &tId3, &nId3, &id4, &tId4, &nId4);
+                        int n = sscanf(buffer.c_str(), "%*s %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &id1, &tId1, &nId1, &id2, &tId2, &nId2, &id3, &tId3, &nId3, &id4, &tId4, &nId4);
                         if (n == 12) isFaceQuad = true;
                         uvsIndices.push_back(tId1-1);
                         uvsIndices.push_back(tId2-1);
@@ -245,7 +245,7 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     // Fill in the vertex indices
     // We also triangulate each quad face
     meshIndices.push_back(std::vector<uint>());
-    for(int i = 0, j = 0; i < indicesMesh.size(); j++) {
+    for(size_t i = 0, j = 0; i < indicesMesh.size(); j++) {
 
         // Get the current vertex IDs
         uint i1 = indicesMesh[i];

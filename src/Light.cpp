@@ -31,15 +31,15 @@ using namespace openglframework;
 
 // Constructor
 Light::Light(GLuint id)
-      : mLightID(id), mIsActive(false), mDiffuseColor(Color::white()),
-        mSpecularColor(Color::white()) {
+      : mLightID(id), mDiffuseColor(Color::white()),
+        mSpecularColor(Color::white()), mIsActive(false) {
 
 }
 
 // Constructor
 Light::Light(GLuint id, Color diffuseColor, Color specularColor)
-      : mLightID(id), mIsActive(false), mDiffuseColor(diffuseColor),
-        mSpecularColor(specularColor) {
+      : mLightID(id), mDiffuseColor(diffuseColor),
+        mSpecularColor(specularColor), mIsActive(false) {
 
 }
 

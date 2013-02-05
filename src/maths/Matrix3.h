@@ -75,19 +75,19 @@ class Matrix3 {
         ~Matrix3() {}
 
         // Method to get a value in the matrix
-        float Matrix3::getValue(int i, int j) const {
+        float getValue(int i, int j) const {
             assert(i>=0 && i<3 && j>=0 && j<3);
             return m[i][j];
         }
 
         // Method to set a value in the matrix
-        void Matrix3::setValue(int i, int j, float value) {
+        void setValue(int i, int j, float value) {
             assert(i>=0 && i<3 && j>=0 && j<3);
             m[i][j] = value;
         }
 
         // Method to set all the values in the matrix
-        void Matrix3::setAllValues(float a1, float a2, float a3, float b1, float b2, float b3,
+        void setAllValues(float a1, float a2, float a3, float b1, float b2, float b3,
                                           float c1, float c2, float c3) {
             m[0][0] = a1; m[0][1] = a2; m[0][2] = a3;
             m[1][0] = b1; m[1][1] = b2; m[1][2] = b3;
@@ -95,13 +95,13 @@ class Matrix3 {
         }
 
         // Return a column
-        Vector3 Matrix3::getColumn(int i) const {
+        Vector3 getColumn(int i) const {
             assert(i>= 0 && i<3);
             return Vector3(m[0][i], m[1][i], m[2][i]);
         }
 
         // Return the transpose matrix
-        Matrix3 Matrix3::getTranspose() const {
+        Matrix3 getTranspose() const {
             // Return the transpose matrix
             return Matrix3(m[0][0], m[1][0], m[2][0],
                            m[0][1], m[1][1], m[2][1],
@@ -109,20 +109,20 @@ class Matrix3 {
         }
 
         // Return the determinant of the matrix
-        float Matrix3::getDeterminant() const {
+        float getDeterminant() const {
             // Compute and return the determinant of the matrix
             return (m[0][0]*(m[1][1]*m[2][2]-m[2][1]*m[1][2]) - m[0][1]*(m[1][0]*m[2][2]-m[2][0]*m[1][2]) +
                     m[0][2]*(m[1][0]*m[2][1]-m[2][0]*m[1][1]));
         }
 
         // Return the trace of the matrix
-        float Matrix3::getTrace() const {
+        float getTrace() const {
             // Compute and return the trace
             return (m[0][0] + m[1][1] + m[2][2]);
         }
 
         // Set the matrix to the identity matrix
-        void Matrix3::setToIdentity() {
+        void setToIdentity() {
             m[0][0] = 1.0; m[0][1] = 0.0; m[0][2] = 0.0;
             m[1][0] = 0.0; m[1][1] = 1.0; m[1][2] = 0.0;
             m[2][0] = 0.0; m[2][1] = 0.0; m[2][2] = 1.0;
@@ -207,19 +207,19 @@ class Matrix3 {
         }
 
         // Overloaded operator for equality condition
-        bool Matrix3::operator==(const Matrix3& matrix) const {
+        bool operator==(const Matrix3& matrix) const {
             return (m[0][0] == matrix.m[0][0] && m[0][1] == matrix.m[0][1] && m[0][2] == matrix.m[0][2] &&
                     m[1][0] == matrix.m[1][0] && m[1][1] == matrix.m[1][1] && m[1][2] == matrix.m[1][2] &&
                     m[2][0] == matrix.m[2][0] && m[2][1] == matrix.m[2][1] && m[2][2] == matrix.m[2][2]);
         }
 
         // Overloaded operator for the is different condition
-        bool Matrix3::operator!= (const Matrix3& matrix) const {
+        bool operator!= (const Matrix3& matrix) const {
             return !(*this == matrix);
         }
 
         // Overloaded operator for addition with assignment
-        Matrix3& Matrix3::operator+=(const Matrix3& matrix) {
+        Matrix3& operator+=(const Matrix3& matrix) {
             m[0][0] += matrix.m[0][0]; m[0][1] += matrix.m[0][1]; m[0][2] += matrix.m[0][2];
             m[1][0] += matrix.m[1][0]; m[1][1] += matrix.m[1][1]; m[1][2] += matrix.m[1][2];
             m[2][0] += matrix.m[2][0]; m[2][1] += matrix.m[2][1]; m[2][2] += matrix.m[2][2];
@@ -227,7 +227,7 @@ class Matrix3 {
         }
 
         // Overloaded operator for substraction with assignment
-        Matrix3& Matrix3::operator-=(const Matrix3& matrix) {
+        Matrix3& operator-=(const Matrix3& matrix) {
             m[0][0] -= matrix.m[0][0]; m[0][1] -= matrix.m[0][1]; m[0][2] -= matrix.m[0][2];
             m[1][0] -= matrix.m[1][0]; m[1][1] -= matrix.m[1][1]; m[1][2] -= matrix.m[1][2];
             m[2][0] -= matrix.m[2][0]; m[2][1] -= matrix.m[2][1]; m[2][2] -= matrix.m[2][2];
@@ -235,7 +235,7 @@ class Matrix3 {
         }
 
         // Overloaded operator for multiplication with a number with assignment
-        Matrix3& Matrix3::operator*=(float nb) {
+        Matrix3& operator*=(float nb) {
             m[0][0] *= nb; m[0][1] *= nb; m[0][2] *= nb;
             m[1][0] *= nb; m[1][1] *= nb; m[1][2] *= nb;
             m[2][0] *= nb; m[2][1] *= nb; m[2][2] *= nb;
