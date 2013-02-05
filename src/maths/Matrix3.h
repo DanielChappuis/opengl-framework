@@ -28,6 +28,7 @@
 
 // Libraries
 #include <cassert>
+#include <limits>
 #include "Vector3.h"
 
 namespace openglframework {
@@ -135,17 +136,15 @@ class Matrix3 {
             float determinant = getDeterminant();
 
             // Check if the determinant is equal to zero
-            assert(determinant != 0.0);
-            float invDeterminant = 1.0 / determinant;
-            Matrix3 tempMatrix;
+            assert(determinant > std::numeric_limits<float>::epsilon());
 
-            // Compute the inverse of the matrix
-            tempMatrix.setAllValues((m[1][1]*m[2][2]-m[2][1]*m[1][2]), -(m[1][0]*m[2][2]-m[2][0]*m[1][2]), (m[1][0]*m[2][1]-m[2][0]*m[1][1]),
-                                    -(m[0][1]*m[2][2]-m[2][1]*m[0][2]), (m[0][0]*m[2][2]-m[2][0]*m[0][2]), -(m[0][0]*m[2][1]-m[2][0]*m[0][1]),
-                                    (m[0][1]*m[1][2]-m[0][2]*m[1][1]), -(m[0][0]*m[1][2]-m[1][0]*m[0][2]), (m[0][0]*m[1][1]-m[0][1]*m[1][0]));
+            float invDeterminant = 1.0f / determinant;
+            Matrix3 tempMatrix((m[1][1]*m[2][2]-m[2][1]*m[1][2]), -(m[0][1]*m[2][2]-m[2][1]*m[0][2]), (m[0][1]*m[1][2]-m[0][2]*m[1][1]),
+                               -(m[1][0]*m[2][2]-m[2][0]*m[1][2]), (m[0][0]*m[2][2]-m[2][0]*m[0][2]), -(m[0][0]*m[1][2]-m[1][0]*m[0][2]),
+                               (m[1][0]*m[2][1]-m[2][0]*m[1][1]), -(m[0][0]*m[2][1]-m[2][0]*m[0][1]), (m[0][0]*m[1][1]-m[0][1]*m[1][0]));
 
             // Return the inverse matrix
-            return (tempMatrix.getTranspose() * invDeterminant);
+            return (tempMatrix * invDeterminant);
         }
 
         // Display the matrix
