@@ -26,6 +26,8 @@
 // Librairies
 #include "TextureReaderWriter.h"
 #include <string>
+#include <jpeglib.h>
+#include <jerror.h>
 
 using namespace openglframework;
 using namespace std;
@@ -53,7 +55,7 @@ typedef struct {
 #pragma pack(pop)
 
 // Load a texture from a file
-bool TextureReaderWriter::loadTextureFromFile(const std::string& filename,
+void TextureReaderWriter::loadTextureFromFile(const std::string& filename,
                                               Texture2D& textureToCreate)
                                               throw(runtime_error, invalid_argument){
 
@@ -63,7 +65,10 @@ bool TextureReaderWriter::loadTextureFromFile(const std::string& filename,
 
     // Load the file using the correct method
     if (extension == "tga") {
-        return readTGAPicture(filename, textureToCreate);
+        readTGAPicture(filename, textureToCreate);
+    }
+    else if (extension == "jpg" || extension == "jpeg"){
+        readJPEGPicture(filename, textureToCreate);
     }
     else {
 
@@ -88,6 +93,9 @@ void TextureReaderWriter::writeTextureToFile(const std::string& filename,
     if (extension == "tga") {
         writeTGAPicture(filename, texture);
     }
+    else if (extension == "jpg" || extension == "jpeg"){
+        writeJPEGPicture(filename, texture);
+    }
     else {
 
         // Display an error message and throw an exception
@@ -99,7 +107,7 @@ void TextureReaderWriter::writeTextureToFile(const std::string& filename,
 }
 
 // Load a TGA picture
-bool TextureReaderWriter::readTGAPicture(const std::string &filename,
+void TextureReaderWriter::readTGAPicture(const std::string &filename,
                                          Texture2D& textureToCreate) throw(runtime_error) {
 
     // Open the file
@@ -108,8 +116,10 @@ bool TextureReaderWriter::readTGAPicture(const std::string &filename,
     // If we cannot open the file
     if(!stream.is_open()) {
 
-        // Throw an exception
-        throw std::runtime_error("Error : Cannot open the file " + filename);
+        // Throw an exception and display an error message
+        string errorMessage("Error : Cannot open the file " + filename);
+        std::cerr << errorMessage << std::endl;
+        throw std::runtime_error(errorMessage);
     }
 
     TGA_HEADER header;
@@ -162,8 +172,10 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
     // If the file cannot be opened
     if(!stream.is_open()) {
 
-        // Throw an exception
-        throw std::runtime_error("Error : Cannot create/access the file " + filename);
+        // Throw an exception and display an error message
+        string errorMessage("Error : Cannot create/access the file " + filename);
+        std::cerr << errorMessage << std::endl;
+        throw std::runtime_error(errorMessage);
     }
 
     // Fill in the TGA header
@@ -201,4 +213,70 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
 
     // Unbind the corresponding texture
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+// Read a JPEG picture
+void TextureReaderWriter::readJPEGPicture(const std::string& filename,
+                                          Texture2D& textureToCreate) throw(std::runtime_error) {
+
+    /*
+    // Open the file
+    FILE* file = fopen(filename.c_str(), "rb");
+    struct jpeg_decompress_struct info;
+    struct jpeg_error_mgr error;
+
+    info.err = jpeg_std_error(&amp;err);
+    jpeg_create_decompress(&amp;info);
+
+    // If we cannot open the file
+    if (!file) {
+
+        // Throw an exception and display an error message
+        string errorMessage("Error : Cannot open the file " + filename);
+        throw std::runtime_error(errorMessage);
+    }
+
+    jpeg_stdio_src(&amp;info, file);
+    jpeg_read_header(&amp;info, true);
+    jpeg_start_decompress(&amp;info);
+
+    unsigned long x = info.output_width;
+    unsigned long y = info.output_height;
+    int channels = info.num_components;
+
+    // Get the type
+    GLuint type;
+    if (channels == 4) {
+        type = GL_RGBA;
+    }
+
+    unsigned short int bpp = channels * 8;
+
+    unsigned long size = x * y * 3;
+
+    BYTE* data = new BYTE[size];
+
+    BYTE* p1 = data;
+    BYTE** p2 = &amp;p1;
+    int numlines = 0;
+
+    while(info.output_scanline < info.output_height) {
+        numlines = jpeg_read_scanlines(&amp;info, p2, 1);
+        *p2 += numlines * 3 * info.output_width;
+    }
+
+    jpeg_finish_decompress(&amp;info);   //finish decompressing this file
+
+    // Close the file
+    fclose(file);
+
+    // Create the OpenGL texture
+    textureToCreate.create(x, y, type, type, GL_UNSIGNED_BYTE, data);
+    */
+}
+
+// Write a JPEG picture
+void TextureReaderWriter::writeJPEGPicture(const std::string& filename,
+                                           const Texture2D& texture) throw(std::runtime_error) {
+
 }

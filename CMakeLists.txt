@@ -46,8 +46,16 @@ else()
    MESSAGE("GLEW not found")
 endif()
 
+# Find the LIBJPEG library
+FIND_PACKAGE(JPEG REQUIRED)
+if(JPEG_FOUND)
+   MESSAGE("LIBJPEG found")
+else()
+   MESSAGE("LIBJPEG not found")
+endif()
+
 # Headers
-INCLUDE_DIRECTORIES(src)
+INCLUDE_DIRECTORIES(src ${JPEG_INCLUDE_DIR})
 
 # Library configuration
 file (

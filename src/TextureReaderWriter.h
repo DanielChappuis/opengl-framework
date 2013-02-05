@@ -30,6 +30,7 @@
 #include "Texture2D.h"
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
 namespace openglframework {
 
@@ -46,19 +47,27 @@ class TextureReaderWriter {
         TextureReaderWriter();
 
         // Read a TGA picture
-        static bool readTGAPicture(const std::string& filename,
+        static void readTGAPicture(const std::string& filename,
                                    Texture2D& textureToCreate) throw(std::runtime_error);
 
         // Write a TGA picture
         static void writeTGAPicture(const std::string& filename,
                                     const Texture2D& texture) throw(std::runtime_error);
 
+        // Read a JPEG picture
+        static void readJPEGPicture(const std::string& filename,
+                                    Texture2D& textureToCreate) throw(std::runtime_error);
+
+        // Write a JPEG picture
+        static void writeJPEGPicture(const std::string& filename,
+                                     const Texture2D& texture) throw(std::runtime_error);
+
     public :
 
         // -------------------- Methods -------------------- //
 
         // Load a texture from a file
-        static bool loadTextureFromFile(const std::string& filename,
+        static void loadTextureFromFile(const std::string& filename,
                                         Texture2D& textureToCreate)
                                         throw(std::runtime_error, std::invalid_argument);
 

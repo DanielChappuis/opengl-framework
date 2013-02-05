@@ -28,6 +28,7 @@
 
 // Libraries
 #include <string>
+#include <stdexcept>
 #include "Mesh.h"
 
 namespace openglframework {
