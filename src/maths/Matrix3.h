@@ -65,7 +65,7 @@ class Matrix3 {
         }
 
         // Constructor
-        Matrix3(const Vector3 a1, const Vector3 a2, const Vector3 a3) {
+        Matrix3(const Vector3& a1, const Vector3& a2, const Vector3& a3) {
             m[0][0] = a1.x; m[0][1] = a2.x; m[0][2] = a3.x;
             m[1][0] = a1.y; m[1][1] = a2.y; m[1][2] = a3.y;
             m[2][0] = a1.z; m[2][1] = a2.z; m[2][2] = a3.z;
