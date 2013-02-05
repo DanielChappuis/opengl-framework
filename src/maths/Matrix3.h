@@ -152,7 +152,7 @@ class Matrix3 {
         void print() const {
             for (int i=0; i<3; i++) {
                 for (int j=0; j<3; j++) {
-                    std::cout << m[i][j];
+                    std::cout << m[i][j] << " ";
                 }
                 std::cout << std::endl;
             }
