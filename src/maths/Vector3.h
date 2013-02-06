@@ -27,8 +27,9 @@
 #define VECTOR3_H
 
 // Libraries
-#include <math.h>
-#include <assert.h>
+#include <cmath>
+#include <cassert>
+#include <limits>
 
 namespace openglframework {
 
@@ -47,6 +48,16 @@ class Vector3 {
 
         // Constructor
         Vector3(float x=0, float y=0, float z=0) : x(x), y(y), z(z) {}
+        Vector3( const Vector3& v ) : x(v.x), y(v.y), z(v.z) {}
+
+        // Constructor
+        ~Vector3() {}
+
+        // + operator
+        Vector3& operator=(const Vector3 &v) {
+            x = v.x; y = v.y; z = v.z;
+            return *this;
+        }
 
         // + operator
         Vector3 operator+(const Vector3 &v) const {
@@ -75,6 +86,11 @@ class Vector3 {
             return x == v.x && y == v.y && z == v.z;
         }
 
+        // != operator
+        bool operator!=(const Vector3 &v) const {
+          return !( *this == v );
+        }
+
         // * operator
         Vector3 operator*(float f) const {
             return Vector3(f*x, f*y, f*z);
@@ -88,14 +104,14 @@ class Vector3 {
 
         // / operator
         Vector3 operator/(float f) const {
-            assert(f!=0);
+            assert(f > std::numeric_limits<float>::epsilon() );
             float inv = 1.f / f;
             return Vector3(x * inv, y * inv, z * inv);
         }
 
         // /= operator
         Vector3 &operator/=(float f) {
-            assert(f!=0);
+            assert(f > std::numeric_limits<float>::epsilon());
             float inv = 1.f / f;
             x *= inv; y *= inv; z *= inv;
             return *this;
@@ -140,7 +156,7 @@ class Vector3 {
 
         // Normalize the vector and return it
         Vector3 normalize() {
-            assert(length() != 0);
+            assert(length() > std::numeric_limits<float>::epsilon() );
             float l = length();
             x /= l;
             y /= l;
