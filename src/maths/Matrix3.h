@@ -48,7 +48,7 @@ class Matrix3 {
 
         // Constructor
         Matrix3() {
-            setAllValues(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+            setToNull();
         }
 
         // Constructor
@@ -72,8 +72,14 @@ class Matrix3 {
             m[2][0] = a1.z; m[2][1] = a2.z; m[2][2] = a3.z;
         }
 
-        // Destructor
-        ~Matrix3() {}
+        // Constructor
+        Matrix3( const Matrix3& A) {
+            for(int i=0; i<3; i++ ) {
+                for( int j=0; j<3; j++ ) {
+                    m[i][j] = A.m[i][j];
+                }
+            }
+        }
 
         // Method to get a value in the matrix
         float getValue(int i, int j) const {
@@ -122,11 +128,28 @@ class Matrix3 {
             return (m[0][0] + m[1][1] + m[2][2]);
         }
 
+        void setToNull() {
+          m[0][0] = 0.0; m[0][1] = 0.0; m[0][2] = 0.0;
+          m[1][0] = 0.0; m[1][1] = 0.0; m[1][2] = 0.0;
+          m[2][0] = 0.0; m[2][1] = 0.0; m[2][2] = 0.0;
+        }
+
+        bool isNull() const {
+          Matrix3 zero;
+          return *this == zero;
+        }
+
         // Set the matrix to the identity matrix
         void setToIdentity() {
             m[0][0] = 1.0; m[0][1] = 0.0; m[0][2] = 0.0;
             m[1][0] = 0.0; m[1][1] = 1.0; m[1][2] = 0.0;
             m[2][0] = 0.0; m[2][1] = 0.0; m[2][2] = 1.0;
+        }
+
+        bool isIdentity() const {
+          Matrix3 I;
+          I.setToIdentity();
+          return ( *this == I );
         }
 
         // Return the inverse matrix
@@ -156,6 +179,17 @@ class Matrix3 {
                 std::cout << std::endl;
             }
         }
+
+        // Overloaded operator =
+        Matrix3& operator=(const Matrix3& A) {
+            for(int i=0; i<3; i++ ) {
+                for( int j=0; j<3; j++ ) {
+                    m[i][j] = A.m[i][j];
+                }
+            }
+            return *this;
+        }
+
 
         // Overloaded operator for addition
         Matrix3 operator+(const Matrix3& matrix2) {
