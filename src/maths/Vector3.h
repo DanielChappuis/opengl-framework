@@ -156,8 +156,8 @@ class Vector3 {
 
         // Normalize the vector and return it
         Vector3 normalize() {
-            assert(length() > std::numeric_limits<float>::epsilon() );
             float l = length();
+            assert(l > std::numeric_limits<float>::epsilon() );
             x /= l;
             y /= l;
             z /= l;
@@ -183,7 +183,7 @@ class Vector3 {
 };
 
 inline Vector3 operator*(float f, const Vector3 & o) {
-	return o*f;
+  return o*f;
 }
 
 }
