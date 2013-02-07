@@ -216,7 +216,7 @@ void Viewer::rotate(int xMouse, int yMouse) {
             float cosAngle = mLastPointOnSphere.dot(newPoint3D);
 
             float epsilon = std::numeric_limits<float>::epsilon();
-            if (fabs(cosAngle) < 1.0f && axis.lengthSquared() > epsilon * epsilon) {
+            if (fabs(cosAngle) < 1.0f && axis.length() > epsilon) {
                 axis.normalize();
                 float angle = 2.0f * acos(cosAngle);
 
