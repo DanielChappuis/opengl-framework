@@ -215,14 +215,13 @@ void Viewer::rotate(int xMouse, int yMouse) {
             Vector3 axis = mLastPointOnSphere.cross(newPoint3D);
             float cosAngle = mLastPointOnSphere.dot(newPoint3D);
 
-            if (!axis.isNull() ) {
-              if (fabs(cosAngle) < 1.0f) {
-                  axis.normalize();
-                  float angle = 2.0f * acos(cosAngle);
+            float epsilon = std::numeric_limits<float>::epsilon();
+            if (fabs(cosAngle) < 1.0f && axis.lengthSquared() > epsilon * epsilon) {
+                axis.normalize();
+                float angle = 2.0f * acos(cosAngle);
 
-                  // Rotate the camera around the center of the scene
-                  mCamera.rotateAroundLocalPoint(axis, -angle, mCenterScene);
-              }
+                // Rotate the camera around the center of the scene
+                mCamera.rotateAroundLocalPoint(axis, -angle, mCenterScene);
             }
         }
     }
