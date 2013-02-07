@@ -49,6 +49,9 @@ class Vector2 {
         // Constructor
         Vector2(float x=0, float y=0) : x(x), y(y) {}
 
+        // Constructor
+        Vector2(const Vector2& vector) : x(vector.x), y(vector.y) {}
+
         // + operator
         Vector2 operator+(const Vector2 &v) const {
             return Vector2(x + v.x, y + v.y);
@@ -68,6 +71,15 @@ class Vector2 {
         // -= operator
         Vector2& operator-=(const Vector2 &v) {
             x -= v.x; y -= v.y;
+            return *this;
+        }
+
+        // = operator
+        Vector2& operator=(const Vector2& vector) {
+            if (&vector != this) {
+                x = vector.x;
+                y = vector.y;
+            }
             return *this;
         }
 

@@ -45,22 +45,28 @@ struct Color {
         // Constructor
         Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 
+        // Constructor
+        Color(const Color& color) : r(color.r), g(color.g), b(color.b), a(color.a) {}
+
         // Destructor
         ~Color() {}
-
-        // Copy-constructor
-        Color(const Color& color) {
-            r = color.r;
-            g = color.g;
-            b = color.b;
-            a = color.a;
-        }
 
         // Return the black color
         static Color black() { return Color(0.0f, 0.0f, 0.0f, 1.0f);}
 
         // Return the white color
         static Color white() { return Color(1.0f, 1.0f, 1.0f, 1.0f);}
+
+        // = operator
+        Color& operator=(const Color& color) {
+            if (&color != this) {
+                r = color.r;
+                g = color.g;
+                b = color.b;
+                a = color.a;
+            }
+            return *this;
+        }
 };
 
 #endif

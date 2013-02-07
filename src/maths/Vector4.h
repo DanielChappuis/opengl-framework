@@ -48,6 +48,9 @@ class Vector4 {
         // Constructor
         Vector4(float x=0, float y=0, float z=0, float w=0) : x(x), y(y), z(z), w(w) {}
 
+        // Constructor
+        Vector4(const Vector4& vector) : x(vector.x), y(vector.y), z(vector.z), w(vector.w) {}
+
         // + operator
         Vector4 operator+(const Vector4 &v) const {
             return Vector4(x + v.x, y + v.y, z + v.z, w + v.w);
@@ -67,6 +70,17 @@ class Vector4 {
         // -= operator
         Vector4& operator-=(const Vector4 &v) {
             x -= v.x; y -= v.y; z -= v.z, w -=v.w;
+            return *this;
+        }
+
+        // = operator
+        Vector4& operator=(const Vector4& vector) {
+            if (&vector != this) {
+                x = vector.x;
+                y = vector.y;
+                z = vector.z;
+                w = vector.w;
+            }
             return *this;
         }
 

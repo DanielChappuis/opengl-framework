@@ -73,12 +73,10 @@ class Matrix3 {
         }
 
         // Constructor
-        Matrix3( const Matrix3& A) {
-            for(int i=0; i<3; i++ ) {
-                for( int j=0; j<3; j++ ) {
-                    m[i][j] = A.m[i][j];
-                }
-            }
+        Matrix3(const Matrix3& matrix) {
+            setAllValues(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2],
+                         matrix.m[1][0], matrix.m[1][1], matrix.m[1][2],
+                         matrix.m[2][0], matrix.m[2][1], matrix.m[2][2]);
         }
 
         // Method to get a value in the matrix
@@ -181,11 +179,11 @@ class Matrix3 {
         }
 
         // Overloaded operator =
-        Matrix3& operator=(const Matrix3& A) {
-            for(int i=0; i<3; i++ ) {
-                for( int j=0; j<3; j++ ) {
-                    m[i][j] = A.m[i][j];
-                }
+        Matrix3& operator=(const Matrix3& matrix) {
+            if (&matrix != this) {
+                setAllValues(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2],
+                             matrix.m[1][0], matrix.m[1][1], matrix.m[1][2],
+                             matrix.m[2][0], matrix.m[2][1], matrix.m[2][2]);
             }
             return *this;
         }

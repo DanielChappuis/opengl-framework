@@ -48,14 +48,20 @@ class Vector3 {
 
         // Constructor
         Vector3(float x=0, float y=0, float z=0) : x(x), y(y), z(z) {}
-        Vector3( const Vector3& v ) : x(v.x), y(v.y), z(v.z) {}
+
+        // Constructor
+        Vector3(const Vector3& vector) : x(vector.x), y(vector.y), z(vector.z) {}
 
         // Constructor
         ~Vector3() {}
 
-        // + operator
-        Vector3& operator=(const Vector3 &v) {
-            x = v.x; y = v.y; z = v.z;
+        // = operator
+        Vector3& operator=(const Vector3& vector) {
+            if (&vector != this) {
+                x = vector.x;
+                y = vector.y;
+                z = vector.z;
+            }
             return *this;
         }
 

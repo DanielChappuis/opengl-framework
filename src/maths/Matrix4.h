@@ -83,6 +83,15 @@ class Matrix4 {
             m[3][0] = a1.w; m[3][1] = a2.w; m[3][2] = a3.w;  m[3][3] = 1.f;
         }
 
+        // Constructor
+        Matrix4(const Matrix4& matrix) {
+
+            setAllValues(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2], matrix.m[0][3],
+                         matrix.m[1][0], matrix.m[1][1], matrix.m[1][2], matrix.m[1][3],
+                         matrix.m[2][0], matrix.m[2][1], matrix.m[2][2], matrix.m[2][3],
+                         matrix.m[3][0], matrix.m[3][1], matrix.m[3][2], matrix.m[3][3]);
+        }
+
         // + operator
         Matrix4 operator+(const Matrix4 &n) const {
             return Matrix4(m[0][0]+n.m[0][0], m[0][1]+n.m[0][1], m[0][2]+n.m[0][2], m[0][3]+n.m[0][3],
@@ -114,6 +123,17 @@ class Matrix4 {
             m[1][0]-=n.m[1][0]; m[1][1]-=n.m[1][1]; m[1][2]-=n.m[1][2]; m[1][3]-=n.m[1][3];
             m[2][0]-=n.m[2][0]; m[2][1]-=n.m[2][1]; m[2][2]-=n.m[2][2]; m[2][3]-=n.m[2][3];
             m[3][0]-=n.m[3][0]; m[3][1]-=n.m[3][1]; m[3][2]-=n.m[3][2]; m[3][3]-=n.m[3][3];
+            return *this;
+        }
+
+        // = operator
+        Matrix4& operator=(const Matrix4& matrix) {
+            if (&matrix != this) {
+                setAllValues(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2], matrix.m[0][3],
+                             matrix.m[1][0], matrix.m[1][1], matrix.m[1][2], matrix.m[1][3],
+                             matrix.m[2][0], matrix.m[2][1], matrix.m[2][2], matrix.m[2][3],
+                             matrix.m[3][0], matrix.m[3][1], matrix.m[3][2], matrix.m[3][3]);
+            }
             return *this;
         }
 
@@ -289,6 +309,17 @@ class Matrix4 {
                 }
             }
             return Matrix4(minv);
+        }
+
+        // Method to set all the values in the matrix
+        void setAllValues(float a1, float a2, float a3, float a4,
+                          float b1, float b2, float b3, float b4,
+                          float c1, float c2, float c3, float c4,
+                          float d1, float d2, float d3, float d4) {
+            m[0][0] = a1; m[0][1] = a2; m[0][2] = a3, m[0][3] = a4;
+            m[1][0] = b1; m[1][1] = b2; m[1][2] = b3; m[1][3] = b4;
+            m[2][0] = c1; m[2][1] = c2; m[2][2] = c3; m[2][3] = c4;
+            m[3][0] = d1; m[3][1] = d2; m[3][2] = d3; m[3][3] = d4;
         }
 
         // Set the matrix to the identity matrix
