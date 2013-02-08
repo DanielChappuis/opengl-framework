@@ -219,8 +219,10 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
     // Mesh data
     vector<std::vector<uint> > meshIndices;
-    vector<Vector3> meshNormals(vertices.size(), Vector3(0, 0, 0));
-    vector<Vector2> meshUVs(vertices.size(), Vector2(0, 0));
+    vector<Vector3> meshNormals;
+    if (!normals.empty()) meshNormals = vector<Vector3>(vertices.size(), Vector3(0, 0, 0));
+    vector<Vector2> meshUVs;
+    if (!uvs.empty()) meshUVs = vector<Vector2>(vertices.size(), Vector2(0, 0));
 
     // We cannot load mesh with several parts for the moment
     uint meshPart = 0;
