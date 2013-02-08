@@ -51,7 +51,7 @@ void MeshReaderWriter::loadMeshFromFile(const std::string& filename,
 
     // Load the file using the correct method
     if (extension == "obj") {
-        return loadOBJFile(filename, meshToCreate);
+        loadOBJFile(filename, meshToCreate);
     }
     else {
 
@@ -68,9 +68,22 @@ void MeshReaderWriter::writeMeshToFile(const std::string& filename,
                                        const Mesh& meshToWrite)
                                        throw(std::invalid_argument, std::runtime_error) {
 
-    // TODO : Implement this method
+    // Get the extension of the file
+    uint startPosExtension = filename.find_last_of(".");
+    string extension = filename.substr(startPosExtension+1);
 
-    throw std::string("Error : This method is not implemented yet !");
+    // Load the file using the correct method
+    if (extension == "obj") {
+        writeOBJFile(filename, meshToWrite);
+    }
+    else {
+
+        // Display an error message and throw an exception
+        string errorMessage("Error : the MeshReaderWriter class cannot store a mesh file with the extension .");
+        errorMessage += extension;
+        std::cerr << errorMessage << std::endl;
+        throw std::invalid_argument(errorMessage.c_str());
+    }
 }
 
 // Load an OBJ file with a triangular or quad mesh
@@ -300,4 +313,83 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     meshToCreate.setVertices(meshVertices);
     meshToCreate.setNormals(meshNormals);
     meshToCreate.setUVs(meshUVs);
+}
+
+// Store a mesh into a OBJ file
+void MeshReaderWriter::writeOBJFile(const std::string& filename, const Mesh& meshToWrite) {
+    std::ofstream file(filename.c_str());
+
+    // Geth the mesh data
+    const std::vector<Vector3>& vertices = meshToWrite.getVertices();
+    const std::vector<Vector3>& normals = meshToWrite.getNormals();
+    const std::vector<Vector2>& uvs = meshToWrite.getUVs();
+
+    // If we can open the file
+    if (file.is_open()) {
+
+        assert(meshToWrite.getNbVertices() == vertices.size());
+
+        // Write the vertices
+        for (uint v=0; v<vertices.size(); v++) {
+
+            file << "v " << vertices[v].x << " " << vertices[v].y << " " << vertices[v].z <<
+                    std::endl;
+        }
+
+        // Write the normals
+        if (meshToWrite.hasNormals()) {
+            file << std::endl;
+
+            assert(meshToWrite.getNbVertices() == normals.size());
+
+            for (uint v=0; v<normals.size(); v++) {
+
+                file << "v " << normals[v].x << " " << normals[v].y << " " << normals[v].z <<
+                        std::endl;
+            }
+        }
+
+        // Write the UVs texture coordinates
+        if (meshToWrite.hasUVTextureCoordinates()) {
+            file << std::endl;
+
+            assert(meshToWrite.getNbVertices() == uvs.size());
+
+            for (uint v=0; v<uvs.size(); v++) {
+
+                file << "v " << uvs[v].x << " " << uvs[v].y << std::endl;
+            }
+        }
+
+        // Write the faces
+        file << std::endl;
+        for (uint p=0; p<meshToWrite.getNbParts(); p++) {
+
+            // Get the indices of the part
+            const std::vector<uint>& indices = meshToWrite.getIndices(p);
+
+            // For each index of the part
+            for (uint i=0; i<indices.size(); i+=3) {
+
+                if (meshToWrite.hasNormals() && meshToWrite.hasUVTextureCoordinates()) {
+                    file << indices[i] << "/" << indices[i] << "/" << indices[i] <<
+                            " " << indices[i+1] << "/" << indices[i+1] << "/" << indices[i+1] <<
+                            " " << indices[i+2] << "/" << indices[i+2] << "/" << indices[i+2] <<
+                            std::endl;
+                }
+                else if (meshToWrite.hasNormals() || meshToWrite.hasUVTextureCoordinates()) {
+                    file << indices[i] << "/" << indices[i] <<
+                            " " << indices[i+1] << "/" << indices[i+1] <<
+                            " " << indices[i+2] << "/" << indices[i+2] << std::endl;
+                }
+                else {
+                    file << indices[i] << " " << indices[i+1] << " " << indices[i+2] << std::endl;
+                }
+            }
+        }
+    }
+    else {
+        std::cerr << "Error : Cannot open the file " << filename << std::endl;
+        exit(1);
+    }
 }

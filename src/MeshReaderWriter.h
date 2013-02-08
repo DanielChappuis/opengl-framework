@@ -49,6 +49,9 @@ class MeshReaderWriter {
         // Load an OBJ file with a triangular or quad mesh
         static void loadOBJFile(const std::string& filename, Mesh& meshToCreate);
 
+        // Store a mesh into a OBJ file
+        static void writeOBJFile(const std::string& filename, const Mesh &meshToWrite);
+
     public :
 
         // -------------------- Methods -------------------- //
