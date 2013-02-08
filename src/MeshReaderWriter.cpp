@@ -223,12 +223,12 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     vector<Vector3> meshNormals;
     vector<Vector2> meshUVs;
 
-    std::vector<unsigned int> indicesMesh(verticesIndices.size());
+    std::vector<uint> indicesMesh(verticesIndices.size());
 
-    typedef std::map<VertexMergingData, unsigned int, VertexMergingDataComparison> VertexMerginMap;
+    typedef std::map<VertexMergingData, uint, VertexMergingDataComparison> VertexMerginMap;
     VertexMerginMap vertexMergingMap;
     VertexMerginMap::iterator it;
-    for(unsigned int i = 0; i < verticesIndices.size(); ++i)
+    for(uint i = 0; i < verticesIndices.size(); ++i)
     {
         VertexMergingData vmd;
         vmd.indexPosition = verticesIndices[i];
@@ -241,8 +241,8 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
         }
         else
         {
-            indicesMesh[i] = (unsigned int)meshVertices.size();
-            vertexMergingMap[vmd] = (unsigned int)meshVertices.size();
+            indicesMesh[i] = (uint)meshVertices.size();
+            vertexMergingMap[vmd] = (uint)meshVertices.size();
             meshVertices.push_back(vertices[verticesIndices[i]]);
             if(!normalsIndices.empty() && !normals.empty()) meshNormals.push_back(normals[normalsIndices[i]]);
             if(!uvsIndices.empty()) meshUVs.push_back(uvs[uvsIndices[i]]);
