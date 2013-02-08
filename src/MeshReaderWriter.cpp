@@ -146,7 +146,7 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
             line = buffer;
             found1 = (int)line.find("/");
             bool isFaceQuad = false;
-            size_t foundNext = (int)line.substr(found1+1).find("/");
+            int foundNext = (int)line.substr(found1+1).find("/");
 
             // If the face definition is of the form "f v1 v2 v3 v4"
             if(found1 == string::npos) {
@@ -154,7 +154,7 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
                 if (nbVertices == 4) isFaceQuad = true;
             }
             // If the face definition is of the form "f v1// v2// v3// v4//"
-            else if (foundNext == found1 + 1) {
+            else if (foundNext == 0) {
                 int nbVertices = sscanf(buffer.c_str(), "%*s %d// %d// %d// %d//", &id1, &id2, &id3, &id4);
                 if (nbVertices == 4) isFaceQuad = true;
             }
@@ -219,38 +219,8 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
 
     // Mesh data
     vector<std::vector<uint> > meshIndices;
-    vector<Vector3> meshVertices;
-    vector<Vector3> meshNormals;
-    vector<Vector2> meshUVs;
-
-    std::vector<uint> indicesMesh(verticesIndices.size());
-
-    typedef std::map<VertexMergingData, uint, VertexMergingDataComparison> VertexMerginMap;
-    VertexMerginMap vertexMergingMap;
-    VertexMerginMap::iterator it;
-    for(uint i = 0; i < verticesIndices.size(); ++i)
-    {
-        VertexMergingData vmd;
-        vmd.indexPosition = verticesIndices[i];
-        if(!normalsIndices.empty()) vmd.indexNormal = normalsIndices[i];
-        if(!uvsIndices.empty()) vmd.indexUV = uvsIndices[i];
-        it = vertexMergingMap.find(vmd);
-        if(it != vertexMergingMap.end())
-        {
-            indicesMesh[i] = it->second;
-        }
-        else
-        {
-            indicesMesh[i] = (uint)meshVertices.size();
-            vertexMergingMap[vmd] = (uint)meshVertices.size();
-            meshVertices.push_back(vertices[verticesIndices[i]]);
-            if(!normalsIndices.empty() && !normals.empty()) meshNormals.push_back(normals[normalsIndices[i]]);
-            if(!uvsIndices.empty()) meshUVs.push_back(uvs[uvsIndices[i]]);
-        }
-    }
-    assert(!meshVertices.empty());
-    assert(meshNormals.empty() || meshNormals.size() == meshVertices.size());
-    assert(meshUVs.empty() || meshUVs.size() == meshVertices.size());
+    vector<Vector3> meshNormals(vertices.size(), Vector3(0, 0, 0));
+    vector<Vector2> meshUVs(vertices.size(), Vector2(0, 0));
 
     // We cannot load mesh with several parts for the moment
     uint meshPart = 0;
@@ -258,16 +228,31 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
     // Fill in the vertex indices
     // We also triangulate each quad face
     meshIndices.push_back(std::vector<uint>());
-    for(size_t i = 0, j = 0; i < indicesMesh.size(); j++) {
+    for(size_t i = 0, j = 0; i < verticesIndices.size(); j++) {
 
         // Get the current vertex IDs
-        uint i1 = indicesMesh[i];
-        uint i2 = indicesMesh[i+1];
-        uint i3 = indicesMesh[i+2];
+        uint i1 = verticesIndices[i];
+        uint i2 = verticesIndices[i+1];
+        uint i3 = verticesIndices[i+2];
+
+        // Add the vertex normal
+        if (!normalsIndices.empty()) {
+            meshNormals[i1] = normals[normalsIndices[i]];
+            meshNormals[i2] = normals[normalsIndices[i+1]];
+            meshNormals[i3] = normals[normalsIndices[i+2]];
+        }
+
+        // Add the vertex UV texture coordinates
+        if (!uvsIndices.empty()) {
+            meshUVs[i1] = uvs[uvsIndices[i]];
+            meshUVs[i2] = uvs[uvsIndices[i+1]];
+            meshUVs[i3] = uvs[uvsIndices[i+2]];
+        }
 
         // If the current vertex not in a quad (it is part of a triangle)
         if (!isQuad[j]) {
 
+            // Add the vertex indices
             meshIndices[meshPart].push_back(i1);
             meshIndices[meshPart].push_back(i2);
             meshIndices[meshPart].push_back(i3);
@@ -276,11 +261,11 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
         }
         else {  // If the current vertex is in a quad
 
-            Vector3 v1 = meshVertices[i1];
-            Vector3 v2 = meshVertices[i2];
-            Vector3 v3 = meshVertices[i3];
-            uint i4 = indicesMesh[i+3];
-            Vector3 v4 = meshVertices[i4];
+            Vector3 v1 = vertices[i1];
+            Vector3 v2 = vertices[i2];
+            Vector3 v3 = vertices[i3];
+            uint i4 = verticesIndices[i+3];
+            Vector3 v4 = vertices[i4];
 
             Vector3 v13 = v3-v1;
             Vector3 v12 = v2-v1;
@@ -304,13 +289,27 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
                 meshIndices[meshPart].push_back(i3);
                 meshIndices[meshPart].push_back(i4);
             }
+
+            // Add the vertex normal
+            if (!normalsIndices.empty()) {
+                meshNormals[i4] = normals[normalsIndices[i]];
+            }
+
+            // Add the vertex UV texture coordinates
+            if (!uvsIndices.empty()) {
+                meshUVs[i4] = uvs[uvsIndices[i]];
+            }
+
             i+=4;
         }
     }
 
+    assert(meshNormals.empty() || meshNormals.size() == vertices.size());
+    assert(meshUVs.empty() || meshUVs.size() == vertices.size());
+
     // Set the data to the mesh
     meshToCreate.setIndices(meshIndices);
-    meshToCreate.setVertices(meshVertices);
+    meshToCreate.setVertices(vertices);
     meshToCreate.setNormals(meshNormals);
     meshToCreate.setUVs(meshUVs);
 }
