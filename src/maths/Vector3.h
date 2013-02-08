@@ -163,11 +163,17 @@ class Vector3 {
         // Normalize the vector and return it
         Vector3 normalize() {
             float l = length();
-            assert(l > std::numeric_limits<float>::epsilon() );
+            if(l < std::numeric_limits<float>::epsilon() ) {
+              assert(false);
+              }
             x /= l;
             y /= l;
             z /= l;
             return *this;
+        }
+
+        bool isNull() const {
+          return( x == 0. && y == 0. && z == 0. );
         }
 
         // Clamp the values between 0 and 1
