@@ -372,18 +372,18 @@ void MeshReaderWriter::writeOBJFile(const std::string& filename, const Mesh& mes
             for (uint i=0; i<indices.size(); i+=3) {
 
                 if (meshToWrite.hasNormals() && meshToWrite.hasUVTextureCoordinates()) {
-                    file << "f " <<indices[i] << "/" << indices[i] << "/" << indices[i] <<
-                            " " << indices[i+1] << "/" << indices[i+1] << "/" << indices[i+1] <<
-                            " " << indices[i+2] << "/" << indices[i+2] << "/" << indices[i+2] <<
+                    file << "f " <<indices[i]+1 << "/" << indices[i]+1 << "/" << indices[i]+1 <<
+                            " " << indices[i+1]+1 << "/" << indices[i+1]+1 << "/" << indices[i+1]+1 <<
+                            " " << indices[i+2]+1 << "/" << indices[i+2]+1 << "/" << indices[i+2]+1 <<
                             std::endl;
                 }
                 else if (meshToWrite.hasNormals() || meshToWrite.hasUVTextureCoordinates()) {
-                    file << "f " <<indices[i] << "/" << indices[i] <<
-                            " " << indices[i+1] << "/" << indices[i+1] <<
-                            " " << indices[i+2] << "/" << indices[i+2] << std::endl;
+                    file << "f " <<indices[i]+1 << "/" << indices[i]+1 <<
+                            " " << indices[i+1]+1 << "/" << indices[i+1]+1 <<
+                            " " << indices[i+2]+1 << "/" << indices[i+2]+1 << std::endl;
                 }
                 else {
-                    file << "f " << indices[i] << " " << indices[i+1] << " " << indices[i+2] <<
+                    file << "f " << indices[i]+1 << " " << indices[i+1]+1 << " " << indices[i+2]+1 <<
                             std::endl;
                 }
             }
