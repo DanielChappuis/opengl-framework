@@ -344,7 +344,7 @@ void MeshReaderWriter::writeOBJFile(const std::string& filename, const Mesh& mes
 
             for (uint v=0; v<normals.size(); v++) {
 
-                file << "v " << normals[v].x << " " << normals[v].y << " " << normals[v].z <<
+                file << "vn " << normals[v].x << " " << normals[v].y << " " << normals[v].z <<
                         std::endl;
             }
         }
@@ -357,7 +357,7 @@ void MeshReaderWriter::writeOBJFile(const std::string& filename, const Mesh& mes
 
             for (uint v=0; v<uvs.size(); v++) {
 
-                file << "v " << uvs[v].x << " " << uvs[v].y << std::endl;
+                file << "vt " << uvs[v].x << " " << uvs[v].y << std::endl;
             }
         }
 
