@@ -238,14 +238,14 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
         uint i3 = verticesIndices[i+2];
 
         // Add the vertex normal
-        if (!normalsIndices.empty()) {
+        if (!normalsIndices.empty() && !normals.empty()) {
             meshNormals[i1] = normals[normalsIndices[i]];
             meshNormals[i2] = normals[normalsIndices[i+1]];
             meshNormals[i3] = normals[normalsIndices[i+2]];
         }
 
         // Add the vertex UV texture coordinates
-        if (!uvsIndices.empty()) {
+        if (!uvsIndices.empty() && !uvs.empty()) {
             meshUVs[i1] = uvs[uvsIndices[i]];
             meshUVs[i2] = uvs[uvsIndices[i+1]];
             meshUVs[i3] = uvs[uvsIndices[i+2]];
@@ -293,12 +293,12 @@ void MeshReaderWriter::loadOBJFile(const string &filename, Mesh& meshToCreate) {
             }
 
             // Add the vertex normal
-            if (!normalsIndices.empty()) {
+            if (!normalsIndices.empty() && !normals.empty()) {
                 meshNormals[i4] = normals[normalsIndices[i]];
             }
 
             // Add the vertex UV texture coordinates
-            if (!uvsIndices.empty()) {
+            if (!uvsIndices.empty() && !uvs.empty()) {
                 meshUVs[i4] = uvs[uvsIndices[i]];
             }
 
