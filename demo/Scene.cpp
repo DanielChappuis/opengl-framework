@@ -99,13 +99,13 @@ void Scene::renderMesh() {
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    if (mMesh.hasUVTextureCoordinates()) {
+    if (mMesh.hasTexture()) {
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 
     glVertexPointer(3, GL_FLOAT, 0, mMesh.getVerticesPointer());
     glNormalPointer(GL_FLOAT, 0, mMesh.getNormalsPointer());
-    if(mMesh.hasUVTextureCoordinates()) {
+    if(mMesh.hasTexture()) {
         glTexCoordPointer(2, GL_FLOAT, 0, mMesh.getUVTextureCoordinatesPointer());
     }
 
@@ -117,7 +117,7 @@ void Scene::renderMesh() {
 
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
-    if (mMesh.hasUVTextureCoordinates()) {
+    if (mMesh.hasTexture()) {
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 

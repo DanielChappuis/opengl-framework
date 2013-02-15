@@ -169,6 +169,14 @@ class Mesh : public Object3D {
         // Return true if the mesh has UV texture coordinates
         bool hasUVTextureCoordinates() const;
 
+        // Return true if the mesh has a texture for a given part of the mesh and if it
+        // also have texture coordinates
+        bool hasTextureForPart(uint part = 0) const;
+
+        // Return true if the mesh has a texture (and texture coordinates) for at least one
+        // part of the mesh
+        bool hasTexture() const;
+
         // Return a pointer to the vertices data
         void* getVerticesPointer();
 
@@ -344,6 +352,18 @@ inline bool Mesh::hasColors() const {
 // Return true if the mesh has UV texture coordinates
 inline bool Mesh::hasUVTextureCoordinates() const {
     return mUVs.size() == mVertices.size();
+}
+
+// Return true if the mesh has a texture for a given part of the mesh and if it
+// also have texture coordinates
+inline bool Mesh::hasTextureForPart(uint part) const {
+    return hasUVTextureCoordinates() && mTextures.count(part);
+}
+
+// Return true if the mesh has a texture (and texture coordinates) for at least one
+// part of the mesh
+inline bool Mesh::hasTexture() const {
+    return hasUVTextureCoordinates() && (mTextures.size() > 0);
 }
 
 // Return a pointer to the vertices data

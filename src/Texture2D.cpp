@@ -27,6 +27,7 @@
 #include "Texture2D.h"
 #include <fstream>
 #include <iostream>
+#include <string>
 
 // Namespaces
 using namespace openglframework;
@@ -51,7 +52,7 @@ Texture2D::~Texture2D() {
 
 // Create the texture
 void Texture2D::create(uint width, uint height, uint internalFormat, uint format, uint type,
-            void* data) {
+            void* data) throw(std::invalid_argument) {
 
     assert(width <= 4096 && height <= 4096);
 
@@ -60,6 +61,20 @@ void Texture2D::create(uint width, uint height, uint internalFormat, uint format
 
     mWidth = width;
     mHeight = height;
+
+    switch(format) {
+        case GL_RED:    mNbChannels = 1; break;
+        case GL_RG:     mNbChannels = 2; break;
+        case GL_RGB:    mNbChannels = 3; break;
+        case GL_BGR:    mNbChannels = 3; break;
+        case GL_RGBA:   mNbChannels = 4; break;
+        case GL_BGRA:   mNbChannels = 4; break;
+        default:
+            // Throw an exception and display an error message
+            std::string errorMessage("Error : Wrong OpenGL texture format");
+            std::cerr << errorMessage << std::endl;
+            throw std::invalid_argument(errorMessage);
+    }
 
     // Create the OpenGL texture
     glGenTextures(1, &mID);
