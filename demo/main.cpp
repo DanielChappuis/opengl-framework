@@ -38,14 +38,14 @@ void init();
 using namespace openglframework;
 
 // Global variables
-Viewer* viewer;
+GlutViewer* viewer;
 Scene* scene;
 
 // Main function
 int main(int argc, char** argv) {
 
     // Create and initialize the Viewer
-    viewer = new Viewer();
+    viewer = new GlutViewer();
     Vector2 windowsSize = Vector2(600, 400);
     Vector2 windowsPosition = Vector2(100, 100);
     bool initOK = viewer->init(argc, argv, "OpenGL Framework Demo", windowsSize, windowsPosition);
@@ -112,5 +112,5 @@ void display() {
     glutSwapBuffers();
 
     // Check the OpenGL errors
-    Viewer::checkOpenGLErrors();
+    GlutViewer::checkOpenGLErrors();
 }

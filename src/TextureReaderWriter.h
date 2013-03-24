@@ -41,6 +41,11 @@ class TextureReaderWriter {
 
     private :
 
+        // ------------------- Constants ------------------- //
+
+        // JPEG quality for compression (in percent)
+        static const uint JPEG_COMPRESSION_QUALITY;
+
         // -------------------- Methods -------------------- //
 
         // Constructor (private because we do not want instances of this class)

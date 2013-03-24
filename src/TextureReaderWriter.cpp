@@ -32,6 +32,9 @@
 using namespace openglframework;
 using namespace std;
 
+// Constants
+const uint TextureReaderWriter::JPEG_COMPRESSION_QUALITY = 98;
+
 // TGA file Header
 #pragma pack(push, 1)
 typedef struct {
@@ -175,6 +178,7 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
         // Throw an exception and display an error message
         string errorMessage("Error : Cannot create/access the file " + filename);
         std::cerr << errorMessage << std::endl;
+        delete[] data;
         throw std::runtime_error(errorMessage);
     }
 
@@ -209,7 +213,7 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
     stream.close();
 
     // Delete the data
-    delete [] data;
+    delete[] data;
 
     // Unbind the corresponding texture
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -219,64 +223,107 @@ void TextureReaderWriter::writeTGAPicture(const std::string& filename,
 void TextureReaderWriter::readJPEGPicture(const std::string& filename,
                                           Texture2D& textureToCreate) throw(std::runtime_error) {
 
-    /*
-    // Open the file
-    FILE* file = fopen(filename.c_str(), "rb");
     struct jpeg_decompress_struct info;
     struct jpeg_error_mgr error;
 
-    info.err = jpeg_std_error(&amp;err);
-    jpeg_create_decompress(&amp;info);
+    info.err = jpeg_std_error(&error);
+    jpeg_create_decompress(&info);
+
+    // Open the file
+    FILE* file = fopen(filename.c_str(), "rb");
 
     // If we cannot open the file
     if (!file) {
 
         // Throw an exception and display an error message
         string errorMessage("Error : Cannot open the file " + filename);
+        std::cerr << errorMessage << std::endl;
         throw std::runtime_error(errorMessage);
     }
 
-    jpeg_stdio_src(&amp;info, file);
-    jpeg_read_header(&amp;info, true);
-    jpeg_start_decompress(&amp;info);
+    jpeg_stdio_src(&info, file);
+    jpeg_read_header(&info, true);
+    jpeg_start_decompress(&info);
 
     unsigned long x = info.output_width;
     unsigned long y = info.output_height;
     int channels = info.num_components;
-
-    // Get the type
-    GLuint type;
-    if (channels == 4) {
-        type = GL_RGBA;
-    }
-
-    unsigned short int bpp = channels * 8;
+    assert(channels == 3);
 
     unsigned long size = x * y * 3;
 
     BYTE* data = new BYTE[size];
 
     BYTE* p1 = data;
-    BYTE** p2 = &amp;p1;
+    BYTE** p2 = &p1;
     int numlines = 0;
 
     while(info.output_scanline < info.output_height) {
-        numlines = jpeg_read_scanlines(&amp;info, p2, 1);
+        numlines = jpeg_read_scanlines(&info, p2, 1);
         *p2 += numlines * 3 * info.output_width;
     }
 
-    jpeg_finish_decompress(&amp;info);   //finish decompressing this file
+    jpeg_finish_decompress(&info);   //finish decompressing this file
 
     // Close the file
     fclose(file);
 
     // Create the OpenGL texture
-    textureToCreate.create(x, y, type, type, GL_UNSIGNED_BYTE, data);
-    */
+    textureToCreate.create(x, y, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+    // Free allocated memory
+    delete[] data;
 }
 
 // Write a JPEG picture
 void TextureReaderWriter::writeJPEGPicture(const std::string& filename,
                                            const Texture2D& texture) throw(std::runtime_error) {
 
+    struct jpeg_compress_struct info;
+    struct jpeg_error_mgr error;
+
+    info.err = jpeg_std_error(&error);
+    jpeg_create_compress(&info);
+
+    // Open the file
+    FILE* file = fopen(filename.c_str(), "wb");
+
+    if (!file) {
+        // Throw an exception and display an error message
+        string errorMessage("Error : Cannot write JPEG picture into the file " + filename);
+        std::cerr << errorMessage << std::endl;
+        throw std::runtime_error(errorMessage);
+    }
+
+    // Get the bytes form the OpenGL texture
+    char* data = new char[texture.getWidth() * texture.getHeight() * 3];
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+    jpeg_stdio_dest(&info, file);
+
+    info.image_width = texture.getWidth();
+    info.image_height = texture.getHeight();
+    info.input_components = 3;
+    info.in_color_space = JCS_RGB;
+    jpeg_set_defaults(&info);
+    jpeg_set_quality(&info, JPEG_COMPRESSION_QUALITY, true);
+
+    jpeg_start_compress(&info, true);
+
+    // Write the data into the file
+    JSAMPROW rowPointer;
+    int rowStride = texture.getWidth() * 3;
+    while (info.next_scanline < info.image_height) {
+        rowPointer = (JSAMPROW) &data[info.next_scanline * rowStride];
+        jpeg_write_scanlines(&info, &rowPointer, 1);
+    }
+
+    jpeg_finish_compress(&info);
+    jpeg_destroy_compress(&info);
+
+    // Close the file
+    fclose(file);
+
+    // Free allocated memory
+    delete[] data;
 }

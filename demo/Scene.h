@@ -37,7 +37,7 @@ class Scene {
         // -------------------- Attributes -------------------- //
 
         // Pointer to the viewer
-        openglframework::Viewer* mViewer;
+        openglframework::GlutViewer* mViewer;
 
         // Light 0
         openglframework::Light mLight0;
@@ -58,7 +58,7 @@ class Scene {
         // -------------------- Methods -------------------- //
 
         // Constructor
-        Scene(openglframework::Viewer* viewer);
+        Scene(openglframework::GlutViewer* viewer);
 
         // Destructor
         ~Scene();

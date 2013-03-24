@@ -30,7 +30,7 @@
 using namespace openglframework;
 
 // Constructor
-Scene::Scene(Viewer* viewer) : mViewer(viewer), mLight0(0),
+Scene::Scene(GlutViewer* viewer) : mViewer(viewer), mLight0(0),
                                mPhongShader("shaders/phong.vert",
                                             "shaders/phong.frag"){
 

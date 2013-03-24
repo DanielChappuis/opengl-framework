@@ -29,7 +29,7 @@
 // Libraries
 #include "MeshReaderWriter.h"
 #include "TextureReaderWriter.h"
-#include "Viewer.h"
+#include "GlutViewer.h"
 #include "Camera.h"
 #include "Light.h"
 #include "Mesh.h"

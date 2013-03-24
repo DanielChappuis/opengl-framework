@@ -23,8 +23,8 @@
 *                                                                               *
 ********************************************************************************/
 
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef GLUT_VIEWER_H
+#define GLUT_VIEWER_H
 
 // Libraries
 #include "Shader.h"
@@ -32,12 +32,12 @@
 #include "maths/Vector2.h"
 #include <string>
 #include <GL/glew.h>
-#include <GL/freeglut.h>
+#include "GL/freeglut.h"
 
 namespace openglframework {
 
 // Class Renderer
-class Viewer {
+class GlutViewer {
 
     private:
 
@@ -68,7 +68,8 @@ class Viewer {
 
         // Initialize the GLUT library
         bool initGLUT(int argc, char** argv, const std::string& windowsTitle,
-                      const Vector2& windowsSize, const Vector2& windowsPosition);
+                      const Vector2& windowsSize, const Vector2& windowsPosition,
+                      bool isMultisamplingActive);
 
         bool mapMouseCoordinatesToSphere(int xMouse, int yMouse, Vector3& spherePoint) const;
 
@@ -77,14 +78,15 @@ class Viewer {
         // -------------------- Methods -------------------- //
 
         // Constructor
-        Viewer();
+        GlutViewer();
 
         // Destructor
-        ~Viewer();
+        ~GlutViewer();
 
         // Initialize the viewer
         bool init(int argc, char** argv, const std::string& windowsTitle,
-                  const Vector2& windowsSize, const Vector2& windowsPosition);
+                  const Vector2& windowsSize, const Vector2& windowsPosition,
+                  bool isMultisamplingActive = false);
 
         // Called when the windows is reshaped
         void reshape(int width, int height);
@@ -126,14 +128,14 @@ class Viewer {
 };
 
 // Set the dimension of the camera viewport
-inline void Viewer::reshape(int width, int height) {
+inline void GlutViewer::reshape(int width, int height) {
     mCamera.setDimensions(width, height);
     glViewport(0, 0, width, height);
     glutPostRedisplay();
 }
 
 // Set the scene position (where the camera needs to look at)
-inline void Viewer::setScenePosition(const Vector3& position, float sceneRadius) {
+inline void GlutViewer::setScenePosition(const Vector3& position, float sceneRadius) {
 
     // Set the position and radius of the scene
     mCenterScene = position;
@@ -144,12 +146,12 @@ inline void Viewer::setScenePosition(const Vector3& position, float sceneRadius)
 }
 
 // Get the camera
-inline Camera& Viewer::getCamera() {
+inline Camera& GlutViewer::getCamera() {
    return mCamera;
 }
 
 // Enable/Disable the multi-sampling for anti-aliasing
-inline void Viewer::activateMultiSampling(bool isActive) const {
+inline void GlutViewer::activateMultiSampling(bool isActive) const {
     (isActive) ? glEnable(GL_MULTISAMPLE) : glDisable(GL_MULTISAMPLE);
 }
 

@@ -54,9 +54,6 @@ class Texture2D {
         // Height
         uint mHeight;
 
-        // Number of color channel per pixel
-        uint mNbChannels;
-
     public:
 
         // -------------------- Methods -------------------- //
@@ -97,9 +94,6 @@ class Texture2D {
 
         // Get the height
         uint getHeight() const;
-
-        // Get the number of color channels
-        uint getNbChannels() const;
 };
 
 // Bind the texture
@@ -141,11 +135,6 @@ inline uint Texture2D::getWidth() const {
 // Get the height
 inline uint Texture2D::getHeight() const {
     return mHeight;
-}
-
-// Get the number of color channels
-inline uint Texture2D::getNbChannels() const {
-    return mNbChannels;
 }
 
 }

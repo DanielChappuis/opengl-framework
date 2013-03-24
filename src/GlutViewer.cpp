@@ -24,7 +24,7 @@
 ********************************************************************************/
 
 // Libraries
-#include "Viewer.h"
+#include "GlutViewer.h"
 #include <string>
 
 // Namespaces
@@ -32,7 +32,7 @@ using namespace openglframework;
 using namespace std;
 
 // Constructor
-Viewer::Viewer() {
+GlutViewer::GlutViewer() {
 
     // Initialize the state of the mouse buttons
     for (int i=0; i<10; i++) {
@@ -41,30 +41,38 @@ Viewer::Viewer() {
 }
 
 // Destructor
-Viewer::~Viewer() {
+GlutViewer::~GlutViewer() {
 
 }
 
 // Initialize the viewer
-bool Viewer::init(int argc, char** argv, const string& windowsTitle,
-                    const Vector2& windowsSize, const Vector2& windowsPosition) {
+bool GlutViewer::init(int argc, char** argv, const string& windowsTitle,
+                      const Vector2& windowsSize, const Vector2& windowsPosition,
+                      bool isMultisamplingActive) {
 
     // Initialize the GLUT library
-    bool outputValue = initGLUT(argc, argv, windowsTitle, windowsSize, windowsPosition);
+    bool outputValue = initGLUT(argc, argv, windowsTitle, windowsSize,
+                                windowsPosition, isMultisamplingActive);
 
     // Active the multi-sampling by default
-    //activateMultiSampling(true);
+    if (isMultisamplingActive) {
+        activateMultiSampling(true);
+    }
 
     return outputValue;
 }
 
 // Initialize the GLUT library
-bool Viewer::initGLUT(int argc, char** argv, const string& windowsTitle,
-                        const Vector2& windowsSize, const Vector2& windowsPosition) {
+bool GlutViewer::initGLUT(int argc, char** argv, const string& windowsTitle,
+                        const Vector2& windowsSize, const Vector2& windowsPosition,
+                        bool isMultisamplingActive) {
 
     // Initialize GLUT
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );//| GL_MULTISAMPLE);
+    uint modeWithoutMultiSampling = GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH;
+    uint modeWithMultiSampling = GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GL_MULTISAMPLE;
+    uint displayMode = isMultisamplingActive ? modeWithMultiSampling : modeWithoutMultiSampling;
+    glutInitDisplayMode(displayMode);
 
     // Initialize the size of the GLUT windows
     glutInitWindowSize(static_cast<int>(windowsSize.x),
@@ -91,7 +99,7 @@ bool Viewer::initGLUT(int argc, char** argv, const string& windowsTitle,
 }
 
 // Set the camera so that we can view the whole scene
-void Viewer::resetCameraToViewAll() {
+void GlutViewer::resetCameraToViewAll() {
 
     // Move the camera to the origin of the scene
     mCamera.translateWorld(-mCamera.getOrigin());
@@ -105,7 +113,7 @@ void Viewer::resetCameraToViewAll() {
 }
 
 // Called when a GLUT mouse button event occurs
-void Viewer::mouseButtonEvent(int button, int state, int x, int y) {
+void GlutViewer::mouseButtonEvent(int button, int state, int x, int y) {
 
     // If the mouse button is pressed
     if (state == GLUT_DOWN) {
@@ -134,7 +142,7 @@ void Viewer::mouseButtonEvent(int button, int state, int x, int y) {
 }
 
 // Called when a GLUT mouse motion event occurs
-void Viewer::mouseMotionEvent(int xMouse, int yMouse) {
+void GlutViewer::mouseMotionEvent(int xMouse, int yMouse) {
 
     // Zoom
     if ((mIsButtonDown[GLUT_LEFT_BUTTON] && mIsButtonDown[GLUT_MIDDLE_BUTTON]) ||
@@ -161,7 +169,7 @@ void Viewer::mouseMotionEvent(int xMouse, int yMouse) {
 }
 
 // Map the mouse x,y coordinates to a point on a sphere
-bool Viewer::mapMouseCoordinatesToSphere(int xMouse, int yMouse, Vector3& spherePoint) const {
+bool GlutViewer::mapMouseCoordinatesToSphere(int xMouse, int yMouse, Vector3& spherePoint) const {
 
     int width = mCamera.getWidth();
     int height = mCamera.getHeight();
@@ -185,7 +193,7 @@ bool Viewer::mapMouseCoordinatesToSphere(int xMouse, int yMouse, Vector3& sphere
 }
 
 // Zoom the camera
-void Viewer::zoom(int xMouse, int yMouse) {
+void GlutViewer::zoom(int xMouse, int yMouse) {
     float dy = static_cast<float>(yMouse - mLastMouseY);
     float h = static_cast<float>(mCamera.getHeight());
 
@@ -194,7 +202,7 @@ void Viewer::zoom(int xMouse, int yMouse) {
 }
 
 // Translate the camera
-void Viewer::translate(int xMouse, int yMouse) {
+void GlutViewer::translate(int xMouse, int yMouse) {
    float dx = static_cast<float>(xMouse - mLastMouseX);
    float dy = static_cast<float>(yMouse - mLastMouseY);
 
@@ -204,7 +212,7 @@ void Viewer::translate(int xMouse, int yMouse) {
 }
 
 // Rotate the camera
-void Viewer::rotate(int xMouse, int yMouse) {
+void GlutViewer::rotate(int xMouse, int yMouse) {
 
     if (mIsLastPointOnSphereValid) {
 
@@ -228,7 +236,7 @@ void Viewer::rotate(int xMouse, int yMouse) {
 }
 
 // Check the OpenGL errors
-void Viewer::checkOpenGLErrors() {
+void GlutViewer::checkOpenGLErrors() {
     GLenum glError;
 
     // Get the OpenGL errors
